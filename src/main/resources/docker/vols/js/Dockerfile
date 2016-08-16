@@ -22,8 +22,6 @@ WORKDIR ${TMP}
 # - sets registry directory
 COPY bowerrc.tmpl ${TMP}
 
-#RUN find / -type d
-
 RUN \
     
     # Install Alpine packages
@@ -61,16 +59,11 @@ RUN \
 
     # Clean up
     && cd / && \
-    #du -hs /shared/* && \
-    #ls -la ~ && \
-    #du -hs ~ && \
     apk del gettext && \
     apk del git && \
     apk del coreutils && \
     rm -rf /var/cache/apk && \
     rm -rf ${TMP}/*
-
-#RUN find / -type d
 
 # Export the NPM cache as a Docker volume
 
