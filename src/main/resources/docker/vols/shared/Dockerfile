@@ -14,20 +14,19 @@ RUN apk update   && \
   apk add samba  && \
   apk add samba-common-tools && \
   apk add gettext && \
-  apk add python && \
   apk upgrade samba-4.4.3 \
           --allow-untrusted \
           --update-cache    \
           --repository http://dl-3.alpinelinux.org/alpine/edge/main/  && \
   rm -rf /var/cache/apk
 
-# The volume(s) exposed by this container
-
-VOLUME ${SHARED}
-
 # Samba configuration
 
 ADD smb.conf ${SHARED}/etc/samba/smb.conf.tmpl
+
+# The volume(s) exposed by this container
+
+VOLUME ${SHARED}
 
 EXPOSE 445
 
