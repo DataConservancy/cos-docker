@@ -1,0 +1,6 @@
+debug: false
+run:
+    echo: true
+    pty: false
+    encoding: "utf_8"
+    warn: false
