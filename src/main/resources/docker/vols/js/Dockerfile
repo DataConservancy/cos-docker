@@ -29,6 +29,12 @@ RUN \
       apk add git && \
       apk add gettext && \
       apk add coreutils && \
+      apk add python && \
+      apk add make && \
+      apk add musl && \
+      apk add musl-dev && \
+      apk add gcc && \
+      apk add g++ && \
 
     # npm configuration
     # - sets a global cache directory, ultimately exported as a Docker volume
@@ -45,7 +51,7 @@ RUN \
 
     # Install npm dependencies from 'package.json'
     # - stored in ${NPM_CACHE}
-    && npm -q install || cat /tmp/osf/npm-debug.log \
+    && PYTHON=/usr/bin/python npm -q install || cat /tmp/osf/npm-debug.log \
 
     # Set permissions on the cache
     && chown -R nobody:nobody ${NPM_CACHE} \
@@ -60,8 +66,15 @@ RUN \
     # Clean up
     && cd / && \
     apk del gettext && \
-    apk del git && \
-    apk del coreutils && \
+      apk del git && \
+      apk del coreutils && \
+      apk del python && \
+      apk del make && \
+      apk del musl && \
+      apk del musl-dev && \
+      apk del gcc && \
+      apk del g++ && \
+
     rm -rf /var/cache/apk && \
     rm -rf ${TMP}/*
 
