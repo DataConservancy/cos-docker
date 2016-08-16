@@ -1,4 +1,4 @@
-FROM dataconservancy/python:3.5
+FROM alpine:3.4
 
 # Checks out the Waterbutler code, and builds wheels (a binary format)
 # for each dependency.  The wheels are placed in a wheelhouse
@@ -15,33 +15,77 @@ ENV SHARED=/shared TMP=/tmp
 ENV WHEELHOUSE=${SHARED}/wheelhouse
 ENV WB_REPO=https://github.com/CenterForOpenScience/waterbutler.git WB_BRANCH=develop
 
-# Python Invoke configuration
-# - avoids configuring a pty, to avoid unicode encoding errors like:
-#   "UnicodeEncodeError: 'ascii' codec can't encode characters in position 18-20: ordinal not in range(128)"
-
-COPY invoke.yaml ${TMP}/invoke.yaml
+WORKDIR ${TMP}
 
 # Download OSF Python dependencies as wheels, and store them in the wheelhouse
 # (think Maven storing artifacts in a local Maven repository)
-
-WORKDIR ${TMP}
+#
+# Performed in one large RUN command to minimize image size
 
 RUN \
+
+    # Install Alpine packages
+    # - includes dependencies necessary for python and python wheels
+
+    apk update   && \
+    apk add bash && \
+    apk add python3 && \
+    apk add python3-dev && \
+    apk add libffi-dev && \
+    apk add libxslt-dev && \
+    apk add libxml2-dev && \
+    apk add openssl-dev && \
+    apk add gcc && \
+    apk add musl && \
+    apk add musl-dev && \
+    apk add linux-headers && \
+    apk add git && \
+    apk add gosu \
+            --allow-untrusted \
+            --update-cache    \   
+            --repository http://dl-3.alpinelinux.org/alpine/edge/testing/ && \
+
+    # Install pip, invoke, uwsgi, and wheel
+
+    python3 -m ensurepip && \
+      rm -r /usr/lib/python*/ensurepip && \
+      pip3 install --upgrade pip setuptools && \
+      rm -r /root/.cache && \
+
+     pip install -U pip && \
+       pip install \
+          invoke==0.11.1 \
+          uwsgi==2.0.13.1 \
+          wheel && \
 
     # Clone the WB git repository, which contains the requirements being installed
     git clone --depth=1 -b $WB_BRANCH $WB_REPO wb \
     && cd wb \
 
     # Install the Python development dependencies as 'wheels' in the WHEELHOUSE_PATH
-    # - use custom Invoke configuration from /tmp/invoke.yaml
-    #&& WHEELHOUSE=${WHEELHOUSE}/35 PYTHONIOENCODING="utf_8:ignore" invoke -f ${TMP}/invoke.yaml wheelhouse --dev \
     && WHEELHOUSE=${WHEELHOUSE}/35 invoke wheelhouse --develop \
+
     # Set permissions on the wheelhouse
     && chown -R nobody:nobody ${WHEELHOUSE}/35 \
 
     # Clean up
     && cd .. \
-    && rm -rf wb
+    && rm -rf wb && \
+
+    apk del bash && \
+    apk del python3 && \
+    apk del python3-dev && \
+    apk del libffi-dev && \
+    apk del libxslt-dev && \
+    apk del libxml2-dev && \
+    apk del openssl-dev && \
+    apk del gcc && \
+    apk del musl && \
+    apk del musl-dev && \
+    apk del linux-headers && \
+    apk del git && \
+    apk del gosu && \
+    rm -rf /var/cache/apk
 
 # Export the wheelhouse as a Docker volume
 

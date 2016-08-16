@@ -1,4 +1,4 @@
-FROM dataconservancy/cos-dev-base:python-2.7
+FROM alpine:3.4
 
 # Checks out the OSF code, and builds wheels (a binary format)
 # for each dependency.  The wheels are placed in a wheelhouse
@@ -21,12 +21,43 @@ ENV OSF_REPO=https://github.com/emetsger/osf.io.git OSF_BRANCH=develop
 
 COPY invoke.yaml ${TMP}/invoke.yaml
 
-# Download OSF Python dependencies as wheels, and store them in the wheelhouse
-# (think Maven storing artifacts in a local Maven repository)
-
 WORKDIR ${TMP}
 
+# Download OSF Python dependencies as wheels, and store them in the wheelhouse
+# (think Maven storing artifacts in a local Maven repository)
+# 
+# Done in one large RUN to minimize the size of the image
+
 RUN \
+
+    # Install Alpine packages
+    # - includes dependencies necessary for python and python wheels
+    apk update   && \
+    apk add bash && \
+    apk add python && \
+    apk add python-dev && \
+    apk add py-pip && \ 
+    apk add libffi-dev && \
+    apk add libxslt-dev && \
+    apk add libxml2-dev && \
+    apk add openssl-dev && \
+    apk add gcc && \
+    apk add g++ && \
+    apk add musl && \
+    apk add musl-dev && \
+    apk add linux-headers && \
+    apk add git && \
+    apk add gosu \
+            --allow-untrusted \
+            --update-cache    \   
+            --repository http://dl-3.alpinelinux.org/alpine/edge/testing/ && \
+
+    # Install pip, invoke, uwsgi, and wheel
+    pip install -U pip && \
+      pip install \
+        invoke==0.13.0 \
+        uwsgi==2.0.13.1 \
+        wheel && \
 
     # Clone the OSF git repository, which contains the requirements being installed
     git clone --depth=1 -b $OSF_BRANCH $OSF_REPO osf \
@@ -42,26 +73,25 @@ RUN \
 
     # Clean up
     && cd .. \
-    && rm -rf osf
+    && rm -rf osf && \
 
-# Clean up unused APK packages
-#RUN \
-#  apk del bash && \
-#  apk del python && \
-#  apk del python-dev && \
-#  apk del py-pip && \ 
-#  apk del libffi-dev && \
-#  apk del libxslt-dev && \
-#  apk del libxml2-dev && \
-#  apk del openssl-dev && \
-#  apk del gcc && \
-#  apk del g++ && \
-#  apk del musl && \
-#  apk del musl-dev && \
-#  apk del linux-headers && \
-#  apk del git && \
-#  apk del gosu && \
-#  rm -rf /var/cache/apk
+    # Clean up unused APK packages
+    apk del bash && \
+    apk del python && \
+    apk del python-dev && \
+    apk del py-pip && \ 
+    apk del libffi-dev && \
+    apk del libxslt-dev && \
+    apk del libxml2-dev && \
+    apk del openssl-dev && \
+    apk del gcc && \
+    apk del g++ && \
+    apk del musl && \
+    apk del musl-dev && \
+    apk del linux-headers && \
+    apk del git && \
+    apk del gosu && \
+    rm -rf /var/cache/apk
 
 # Export the wheelhouse as a Docker volume
 
