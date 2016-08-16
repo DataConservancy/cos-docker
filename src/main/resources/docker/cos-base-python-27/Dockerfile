@@ -1,7 +1,8 @@
-FROM alpine:3.4
+#FROM alpine:3.4
+FROM mhart/alpine-node-auto:6.3.1
 
 MAINTAINER Data Conservancy <dc-ird@googlegroups.com>
-LABEL description = "Provides Python 2.7, pip, invoke, uwsgi, wheel, and gosu."
+LABEL description = "Provides Python 2.7, pip, invoke, uwsgi, wheel, nodejs, and gosu."
 
 # Install packages, then remove the cache
 # - includes dependencies necessary for python and python wheels
@@ -16,10 +17,17 @@ RUN apk update   && \
   apk add libxml2-dev && \
   apk add openssl-dev && \
   apk add gcc && \
+  apk add g++ && \
   apk add musl && \
   apk add musl-dev && \
   apk add linux-headers && \
   apk add git && \
+  apk add curl && \
+  apk add make && \
+  apk add paxctl && \
+  apk add libgcc && \
+  apk add libstdc++ && \
+  apk add gnupg && \
   apk add gosu \
           --allow-untrusted \
           --update-cache    \   

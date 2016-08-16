@@ -1,4 +1,4 @@
-FROM dataconservancy/python:2.7
+FROM dataconservancy/cos-base-python:2.7
 
 # Checks out the OSF code, and builds wheels (a binary format)
 # for each dependency.  The wheels are placed in a wheelhouse
