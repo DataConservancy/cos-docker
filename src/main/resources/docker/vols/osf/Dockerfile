@@ -7,7 +7,7 @@ LABEL description = "Provides shared data volume for OSF.io codebase"
 
 ENV SHARED=/shared TMP=/tmp
 ENV CODE=${SHARED}/code
-ENV OSF_REPO=https://github.com/CenterForOpenScience/osf.io.git OSF_BRANCH=develop
+ENV OSF_REPO=https://github.com/emetsger/osf.io.git OSF_BRANCH=develop
 
 WORKDIR ${CODE}
 
