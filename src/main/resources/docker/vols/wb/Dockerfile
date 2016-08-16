@@ -1,4 +1,4 @@
-FROM python:3.5
+FROM alpine:3.4
 
 MAINTAINER Data Conservancy <dc-ird@googlegroups.com>
 LABEL description = "Provides shared data volume for Waterbutler codebase"
@@ -12,7 +12,20 @@ ENV WB_REPO=https://github.com/CenterForOpenScience/waterbutler.git WB_BRANCH=de
 
 WORKDIR ${CODE}
 
-RUN git clone -b $WB_BRANCH $WB_REPO wb \
-    && chown -R www-data:www-data ${CODE}/wb
+RUN \
+    
+    # Install Alpine packages
+    apk update && \
+      apk add git && \
+
+    # Clone the git repository
+    git clone -b $WB_BRANCH $WB_REPO wb && \
+
+    # Set permissions
+    chown -R nobody:nobody ${CODE}/wb && \
+
+    # Clean up Alpine packages
+    apk del git && \
+    rm -rf /var/cache/apk
 
 VOLUME ${CODE}/wb
