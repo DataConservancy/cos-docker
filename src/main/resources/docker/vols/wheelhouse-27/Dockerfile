@@ -1,4 +1,4 @@
-FROM dataconservancy/cos-base-python:2.7
+FROM dataconservancy/cos-dev-base:python-2.7
 
 # Checks out the OSF code, and builds wheels (a binary format)
 # for each dependency.  The wheels are placed in a wheelhouse
@@ -43,6 +43,25 @@ RUN \
     # Clean up
     && cd .. \
     && rm -rf osf
+
+# Clean up unused APK packages
+#RUN \
+#  apk del bash && \
+#  apk del python && \
+#  apk del python-dev && \
+#  apk del py-pip && \ 
+#  apk del libffi-dev && \
+#  apk del libxslt-dev && \
+#  apk del libxml2-dev && \
+#  apk del openssl-dev && \
+#  apk del gcc && \
+#  apk del g++ && \
+#  apk del musl && \
+#  apk del musl-dev && \
+#  apk del linux-headers && \
+#  apk del git && \
+#  apk del gosu && \
+#  rm -rf /var/cache/apk
 
 # Export the wheelhouse as a Docker volume
 
