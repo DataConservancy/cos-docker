@@ -1,7 +1,7 @@
 FROM mhart/alpine-node-auto:6.3.1
 
 MAINTAINER Data Conservancy <dc-ird@googlegroups.com>
-LABEL description = "Provides Python 2.7, pip, invoke, uwsgi, wheel, nodejs (with npm), and gosu."
+LABEL description = "Provides Python 2.7, Django, pip, invoke, uwsgi, wheel, nodejs (with npm), and gosu."
 
 # Install packages, then remove the cache
 # - includes dependencies necessary for python and python wheels
@@ -21,6 +21,7 @@ RUN apk update   && \
   apk add musl-dev && \
   apk add linux-headers && \
   apk add git && \
+  apk add py-django && \
   apk add gosu \
           --allow-untrusted \
           --update-cache    \   
