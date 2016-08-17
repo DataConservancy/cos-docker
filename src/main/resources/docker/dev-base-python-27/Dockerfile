@@ -21,7 +21,6 @@ RUN apk update   && \
   apk add musl-dev && \
   apk add linux-headers && \
   apk add git && \
-  apk add py-django && \
   apk add gosu \
           --allow-untrusted \
           --update-cache    \   
