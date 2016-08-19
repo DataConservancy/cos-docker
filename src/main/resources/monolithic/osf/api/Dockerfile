@@ -1,7 +1,7 @@
 FROM mhart/alpine-node-auto:6.3.1
 
 MAINTAINER Data Conservancy <dc-ird@googlegroups.com>
-LABEL description = "Provides an OSF v2 API runtime"
+LABEL description = "Provides runtime suitable for the v2 API or OSF UI"
 
 # Expose each environment variable as a build argument
 # This allows the author of docker-compose.yaml files
