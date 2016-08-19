@@ -106,6 +106,11 @@ RUN \
     && WHEELHOUSE=${WHEELHOUSE} PYTHONIOENCODING="utf_8:ignore" \
       invoke -f ${TMP}/invoke.yaml requirements --quick && \
 
+    # A hack to get around some dependency conflicts with uritemplate in the
+    # GitHub addon (see OSF.io /.travis.yml and /Dockerfile)
+    (pip uninstall uritemplate.py --yes || true) \
+          && pip install --no-cache-dir uritemplate.py==0.3.0 && \
+
     # Set permissions on the wheelhouse
     chown -R nobody:nobody ${WHEELHOUSE}
 
