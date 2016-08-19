@@ -24,6 +24,11 @@ services:
     environment:
       - DB_HOST=tokumx
       - ELASTIC_URI=elasticsearch
+      - CAS_SERVER_URL=http://192.168.99.102:8080
+      - API_DOMAIN=http://192.168.99.102:8000/
+      - DOMAIN=http://192.168.99.102:5000/
+      - WATERBUTLER_URL=http://192.168.99.102:7777
+      - WATERBUTLER_ADDRS=['192.168.99.102']
     command: invoke -f /tmp/invoke.yaml apiserver --host=0.0.0.0
     # build:
     #   context: ./api
@@ -45,6 +50,11 @@ services:
     environment:
       - DB_HOST=tokumx
       - ELASTIC_URI=elasticsearch
+      - CAS_SERVER_URL=http://192.168.99.102:8080
+      - API_DOMAIN=http://192.168.99.102:8000/
+      - DOMAIN=http://192.168.99.102:5000/
+      - WATERBUTLER_URL=http://192.168.99.102:7777
+      - WATERBUTLER_ADDRS=['192.168.99.102']
     command: invoke -f /tmp/invoke.yaml server --host=0.0.0.0
     # build:
     #   context: ./api

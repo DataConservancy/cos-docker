@@ -138,7 +138,6 @@ RUN \
     apk --no-cache update && \
       apk --no-cache add \
         git \
-        gettext \
         coreutils \
         make \
         musl \
@@ -147,6 +146,8 @@ RUN \
         g++ \
         # bash required by webpack
         bash \
+        # envsubst required by entrypoint
+        gettext \
         # Keep these, don't `apk del` them later; runtime dependencies of
         # Python libraries
         python \
@@ -180,10 +181,10 @@ RUN \
 
     invoke -f ${TMP}/invoke.yaml build_js_config_files && \
     invoke -d -f ${TMP}/invoke.yaml webpack --dev && \
+    invoke -f ${TMP}/invoke.yaml copy_settings --addons && \
 
-    # Clean up (leave python, bash, and runtime deps noted above)
+    # Clean up (leave python, bash, gettext and runtime deps noted above)
     apk del \
-      gettext \
       git \
       coreutils \
       make \
@@ -193,3 +194,8 @@ RUN \
       g++ && \
 
     rm -rf ${TMP}/*
+
+COPY website/ website/
+COPY entrypoint.sh /
+RUN chmod 700 /entrypoint.sh
+ENTRYPOINT [ "/entrypoint.sh" ]
