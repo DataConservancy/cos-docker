@@ -55,7 +55,18 @@ services:
       - tokumx:tokumx
       - rabbitmq:rabbitmq
       - elasticsearch:elasticsearch
+      - cos_fakecas:fakecas
     expose:
       - 5000
     ports:
       - 5000:5000
+
+  cos_fakecas:
+    image: dataconservancy/cos-fakecas:latest
+    container_name: osf-fakecas
+    links:
+      - tokumx:tokumx
+    expose:
+      - 8080
+    ports:
+      - 8080:8080
