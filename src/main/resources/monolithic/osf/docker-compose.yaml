@@ -8,54 +8,26 @@ services:
   elasticsearch:
     image: elasticsearch:latest
 
-  # cos_js:
-  #   container_name: cos-js
-  #   image: dataconservancy/cos-js
-  #
-  # osf_shared:
-  #   container_name: osf-shared
-  #   #image: dataconservancy/osf-shared
-  #   image: dataconservancy/osf-shared-init # initialized with dependency installations, webpack, etc.
-  #
-  # wheelhouse:
-  #   container_name: wheelhouse
-  #   image: dataconservancy/cos-wheelhouse:2.7
-
   tokumx:
+    image: centerforopenscience/tokumx
     container_name: osf-tokumx
     environment:
       - TOKU_HUGE_PAGES_OK=1
-    image: centerforopenscience/tokumx
     ports:
       - "27017:27017"
 
-  # cifs_share:
-  #   container_name: cifs-share
-  #   image: dataconservancy/cifs-shared
-  #   ports:
-  #     - "445:445"
-  #   volumes_from:
-  #     - cos_js
-  #     - osf_shared
-  #     - wheelhouse
-
   osf_mono:
+    image: test/osf-mono
     container_name: osf-mono-api
-    command: invoke -f /tmp/invoke.yaml apiserver --host=0.0.0.0
-    #command: find / -name "*setuptool*"
     environment:
       - DB_HOST=tokumx
       - ELASTIC_URI=elasticsearch
-    # environment:
-    #   - SHARED=/shared
-    #   - TMP=/tmp
-    # #command: ping tokumx
+    command: invoke -f /tmp/invoke.yaml apiserver --host=0.0.0.0
     # build:
     #   context: ./api
     #   args:
     #     SHARED: /shared
     #     TMP: /tmp
-    image: test/osf-mono
     links:
       - tokumx:tokumx
       - rabbitmq:rabbitmq
@@ -64,8 +36,3 @@ services:
       - 8000
     ports:
       - 8000:8000
-
-    # volumes_from:
-    #   - cos_js
-    #   - osf_shared
-    #   - wheelhouse
