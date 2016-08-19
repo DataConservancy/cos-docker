@@ -18,9 +18,9 @@ services:
     ports:
       - "27017:27017"
 
-  osf_mono:
-    image: test/osf-mono
-    container_name: osf-mono-api
+  osf_api:
+    image: dataconservancy/cos-osf-runtime:latest
+    container_name: osf-api
     environment:
       - DB_HOST=tokumx
       - ELASTIC_URI=elasticsearch
@@ -39,9 +39,9 @@ services:
     ports:
       - 8000:8000
 
-  osf_mono_web:
-    image: test/osf-mono
-    container_name: osf-mono-web
+  osf_web:
+    image: dataconservancy/cos-osf-runtime:latest
+    container_name: osf-web
     environment:
       - DB_HOST=tokumx
       - ELASTIC_URI=elasticsearch
@@ -58,4 +58,4 @@ services:
     expose:
       - 5000
     ports:
-      - 5000:5000      
+      - 5000:5000
