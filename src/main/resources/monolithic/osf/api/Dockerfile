@@ -112,25 +112,25 @@ RUN \
           && pip install --no-cache-dir uritemplate.py==0.3.0 && \
 
     # Set permissions on the wheelhouse
-    chown -R nobody:nobody ${WHEELHOUSE}
+    chown -R nobody:nobody ${WHEELHOUSE} && \
 
     # Clean up APK packages to reduce layer size
-    # apk --no-cache del \
-    #   bash \
-    #   python \
-    #   python-dev \
-    #   py-pip \
-    #   libffi-dev \
-    #   libxslt-dev \
-    #   libxml2-dev \
-    #   openssl-dev \
-    #   gcc \
-    #   g++ \
-    #   musl \
-    #   musl-dev \
-    #   linux-headers \
-    #   git \
-    #   gosu
+    apk --no-cache del \
+      bash \
+      # python \
+      # python-dev \
+      # py-pip \
+      libffi-dev \
+      libxslt-dev \
+      libxml2-dev \
+      openssl-dev \
+      gcc \
+      g++ \
+      musl \
+      musl-dev \
+      linux-headers \
+      git \
+      gosu
 
 RUN \
 
@@ -145,6 +145,8 @@ RUN \
         musl-dev \
         gcc \
         g++ \
+        # bash required by webpack
+        bash \
         # Keep these, don't `apk del` them later; runtime dependencies of
         # Python libraries
         python \
@@ -174,35 +176,20 @@ RUN \
 
     # Set permissions on node modules and bower files
     chown -R nobody:nobody ${SHARED}/bower && \
-    chown -R nobody:nobody ${CODE}/node_modules
-
-RUN \
-    git pull && \
-    ls -l node_modules/webpack/bin/webpack.js && \
-    ls -l webpack.dev.config.js && \
-    ls -l ${TMP} && \
-    find / -name invoke && \
-    cat ${TMP}/invoke.yaml && \
-
-    apk --no-cache add \
-      # bash required by webpack
-      bash && \
-
-    (pip uninstall uritemplate.py --yes || true) \
-          && pip install --no-cache-dir uritemplate.py==0.3.0 && \
+    chown -R nobody:nobody ${CODE}/node_modules && \
 
     invoke -f ${TMP}/invoke.yaml build_js_config_files && \
     invoke -d -f ${TMP}/invoke.yaml webpack --dev && \
 
-    # Clean up (leave python, and bash)
-    # apk del \
-    #   gettext \
-    #   git \
-    #   coreutils \
-    #   make \
-    #   musl \
-    #   musl-dev \
-    #   gcc \
-    #   g++ && \
+    # Clean up (leave python, bash, and runtime deps noted above)
+    apk del \
+      gettext \
+      git \
+      coreutils \
+      make \
+      musl \
+      musl-dev \
+      gcc \
+      g++ && \
 
     rm -rf ${TMP}/*
