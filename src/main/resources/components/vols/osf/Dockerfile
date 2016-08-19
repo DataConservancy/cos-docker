@@ -32,3 +32,5 @@ RUN \
     rm -rf /var/cache/apk
 
 VOLUME ${CODE}/osf.io
+
+CMD [ "/bin/true" ]

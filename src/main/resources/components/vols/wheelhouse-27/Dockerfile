@@ -96,3 +96,5 @@ RUN \
 # Export the wheelhouse as a Docker volume
 
 VOLUME ${WHEELHOUSE}/27
+
+CMD [ "/bin/true" ]

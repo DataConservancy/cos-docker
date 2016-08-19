@@ -1,0 +1,52 @@
+version: "2"
+
+services:
+  
+  cos_js:
+    container_name: cos-js
+    image: dataconservancy/cos-js
+
+  osf_shared:
+    container_name: osf-shared
+    #image: dataconservancy/osf-shared
+    image: dataconservancy/osf-shared-init # initialized with dependency installations, webpack, etc.
+
+  wheelhouse:
+    container_name: wheelhouse
+    image: dataconservancy/cos-wheelhouse:2.7
+   
+  tokumx:
+    container_name: osf-tokumx
+    environment:
+      - TOKU_HUGE_PAGES_OK=1
+    image: centerforopenscience/tokumx
+    ports: 
+      - "27017:27017"
+
+  cifs_share:
+    container_name: cifs-share
+    image: dataconservancy/cifs-shared
+    ports:
+      - "445:445"
+    volumes_from:
+      - cos_js
+      - osf_shared
+      - wheelhouse
+    
+  osf_api_rt:
+    container_name: osf-api-rt
+    environment:
+      - SHARED=/shared
+      - TMP=/tmp
+    #command: ping tokumx
+    build:
+      context: ./api
+      args:
+        SHARED: /shared
+        TMP: /tmp
+    links:
+      - tokumx:tokumx
+    volumes_from:
+      - cos_js
+      - osf_shared
+      - wheelhouse

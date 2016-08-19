@@ -85,3 +85,5 @@ VOLUME ${NPM_CACHE}
 # Export the Bower cache as a Docker volume
 
 VOLUME ${SHARED}/bower
+
+CMD [ "/bin/true" ]
