@@ -38,3 +38,24 @@ services:
       - 8000
     ports:
       - 8000:8000
+
+  osf_mono_web:
+    image: test/osf-mono
+    container_name: osf-mono-web
+    environment:
+      - DB_HOST=tokumx
+      - ELASTIC_URI=elasticsearch
+    command: invoke -f /tmp/invoke.yaml server --host=0.0.0.0
+    # build:
+    #   context: ./api
+    #   args:
+    #     SHARED: /shared
+    #     TMP: /tmp
+    links:
+      - tokumx:tokumx
+      - rabbitmq:rabbitmq
+      - elasticsearch:elasticsearch
+    expose:
+      - 5000
+    ports:
+      - 5000:5000      
