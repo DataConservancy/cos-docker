@@ -4,9 +4,11 @@ services:
 
   rabbitmq:
     image: rabbitmq:latest
+    container_name: osf-rabbitmq
 
   elasticsearch:
     image: elasticsearch:latest
+    container_name: osf-elasticsearch
 
   tokumx:
     image: centerforopenscience/tokumx
