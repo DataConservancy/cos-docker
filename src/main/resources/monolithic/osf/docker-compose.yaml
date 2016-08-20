@@ -22,11 +22,6 @@ services:
     container_name: osf-api
     env_file: .env
     command: invoke -f /tmp/invoke.yaml apiserver --host=0.0.0.0
-    # build:
-    #   context: ./api
-    #   args:
-    #     SHARED: /shared
-    #     TMP: /tmp
     links:
       - tokumx:tokumx
       - rabbitmq:rabbitmq
@@ -41,11 +36,6 @@ services:
     container_name: osf-web
     env_file: .env
     command: invoke -f /tmp/invoke.yaml server --host=0.0.0.0
-    # build:
-    #   context: ./api
-    #   args:
-    #     SHARED: /shared
-    #     TMP: /tmp
     links:
       - tokumx:tokumx
       - rabbitmq:rabbitmq
