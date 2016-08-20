@@ -13,22 +13,14 @@ services:
   tokumx:
     image: centerforopenscience/tokumx
     container_name: osf-tokumx
-    environment:
-      - TOKU_HUGE_PAGES_OK=1
+    env_file: .env
     ports:
       - "27017:27017"
 
   osf_api:
     image: dataconservancy/cos-osf-runtime:latest
     container_name: osf-api
-    environment:
-      - DB_HOST=tokumx
-      - ELASTIC_URI=elasticsearch
-      - CAS_SERVER_URL=http://192.168.99.102:8080
-      - API_DOMAIN=http://192.168.99.102:8000/
-      - DOMAIN=http://192.168.99.102:5000/
-      - WATERBUTLER_URL=http://192.168.99.102:7777
-      - WATERBUTLER_ADDRS=['192.168.99.102']
+    env_file: .env
     command: invoke -f /tmp/invoke.yaml apiserver --host=0.0.0.0
     # build:
     #   context: ./api
@@ -47,14 +39,7 @@ services:
   osf_web:
     image: dataconservancy/cos-osf-runtime:latest
     container_name: osf-web
-    environment:
-      - DB_HOST=tokumx
-      - ELASTIC_URI=elasticsearch
-      - CAS_SERVER_URL=http://192.168.99.102:8080
-      - API_DOMAIN=http://192.168.99.102:8000/
-      - DOMAIN=http://192.168.99.102:5000/
-      - WATERBUTLER_URL=http://192.168.99.102:7777
-      - WATERBUTLER_ADDRS=['192.168.99.102']
+    env_file: .env
     command: invoke -f /tmp/invoke.yaml server --host=0.0.0.0
     # build:
     #   context: ./api
