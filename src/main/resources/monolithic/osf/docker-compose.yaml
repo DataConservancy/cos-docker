@@ -49,6 +49,8 @@ services:
   cos_fakecas:
     image: dataconservancy/cos-fakecas:latest
     container_name: osf-fakecas
+    env_file: .env
+    command: -dbaddress tokumx:27017 -host 0.0.0.0:8080 -osfhost ${DOCKER_OSF_HOST}
     links:
       - tokumx:tokumx
     expose:
