@@ -1,0 +1,22 @@
+FROM alpine:3.4
+
+MAINTAINER Data Conservancy <dc-ird@googlegroups.com>
+LABEL description = "Provides a runnning instance of fakecas on port 8080"
+
+ARG FAKECAS_VERSION
+ARG FAKECAS_ARCH
+
+ENV FAKECAS_VERSION=${FAKECAS_VERSION:-0.8.0} \
+    FAKECAS_ARCH=${FAKECAS_ARCH:-linux-386}
+
+RUN mkdir -p /opt/fakecas
+
+WORKDIR /opt/fakecas
+
+ADD fakecas-${FAKECAS_ARCH} /opt/fakecas/fakecas
+
+RUN chmod 700 /opt/fakecas/fakecas
+
+ENTRYPOINT [ "./fakecas" ]
+
+CMD [ "-dbaddress", "tokumx:27017", "-host", "0.0.0.0:8080" ]
