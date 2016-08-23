@@ -33,6 +33,22 @@
 
     <!-- Modules  =================================================== -->
 
+    <!-- Properties ================================================= -->
+
+    <properties>
+        <!-- Properties used to set environment variables for docker-compose executions -->
+        <db.host>tokumx</db.host>
+        <elastic.uri>elasticsearch</elastic.uri>
+        <docker.osf.host>192.168.99.100:5000</docker.osf.host>
+        <cas.server.url>http://192.168.99.100:8080</cas.server.url>
+        <api.domain>http://192.168.99.100:8000/</api.domain>
+        <domain>http://192.168.99.100:5000</domain>
+        <waterbutler.url>http://192.168.99.100:7777</waterbutler.url>
+        <waterbutler.addrs>['192.168.99.100']</waterbutler.addrs>
+        <toku.huge.pages>1</toku.huge.pages>
+    </properties>
+
+
     <!-- Build  ===================================================== -->
 
     <build>
@@ -79,6 +95,12 @@
                     <groupId>io.fabric8</groupId>
                     <artifactId>docker-maven-plugin</artifactId>
                     <version>0.15.16</version>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>exec-maven-plugin</artifactId>
+                    <version>1.5.0</version>
                 </plugin>
 
             </plugins>
@@ -150,7 +172,52 @@
                         </configuration>
                     </execution>
                 </executions>
+            </plugin>
 
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <configuration>
+                    <workingDirectory>src/main/resources/monolithic/osf</workingDirectory>
+                    <environmentVariables>
+                        <DOCKER_HOST>tcp://192.168.99.100:2376</DOCKER_HOST>
+                        <DOCKER_MACHINE_NAME>osf-docker-test</DOCKER_MACHINE_NAME>
+                        <DOCKER_TLS_VERIFY>0</DOCKER_TLS_VERIFY>
+                        <DB_HOST>${db.host}</DB_HOST>
+                        <ELASTIC_URI>${elastic.uri}</ELASTIC_URI>
+                        <DOCKER_OSF_HOST>${docker.osf.host}</DOCKER_OSF_HOST>
+                        <CAS_SERVER_URL>${cas.server.url}</CAS_SERVER_URL>
+                        <API_DOMAIN>${api.domain}</API_DOMAIN>
+                        <DOMAIN>${domain}</DOMAIN>
+                        <WATERBUTLER_URL>${waterbutler.url}</WATERBUTLER_URL>
+                        <WATERBUTLER_ADDRS>${waterbutler.addrs}</WATERBUTLER_ADDRS>
+                        <TOKU_HUGE_PAGES_OK>${toku.huge.pages}</TOKU_HUGE_PAGES_OK>
+                    </environmentVariables>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>docker-compose-up</id>
+                        <phase>pre-integration-test</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <configuration>
+                            <executable>docker-compose</executable>
+                            <commandlineArgs>up -d</commandlineArgs>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>docker-compose-down</id>
+                        <phase>post-integration-test</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <configuration>
+                            <executable>docker-compose</executable>
+                            <commandlineArgs>stop</commandlineArgs>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
 
             <plugin>
@@ -221,6 +288,11 @@
                     <localCheckout>true</localCheckout>
                     <pushChanges>false</pushChanges>
                 </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
             </plugin>
 
         </plugins>
