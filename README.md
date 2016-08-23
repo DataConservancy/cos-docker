@@ -29,6 +29,10 @@ This may seem a zero-sum proposition: you either spend time building the image (
         * There is no support for executing integration tests "inside of" a container; they must execute against some endpoint that is exposed by the container: a HTTP port, database port, etc.
     * Docker images are pushed to the [Docker Hub](http://hub.docker.com/u/DataConservancy) if successful
 
+The purpose of the integration tests in _this_ project are to insure the viability of the Docker containers and their orchestration with `docker-compose`.  Essentially the integration tests provided by this project are glorified sanity checks of the images, container orchestration, and runtime.
+
+It is anticipated that _external_ projects will have specific integrations with COS projects.  Those external projects may depend on the images produced by this project, and perform project-specific integration tests against the images produced here.
+
 ## Details
 
 1. `Dockerfile`s are hand-coded and hand-tested.  When developing a `Dockerfile`, iterating is much more efficient using the `docker` and `docker-compose` CLI.  Once the `Dockerfile` has been developed and tested in a developers environment, it can be put into Maven.
