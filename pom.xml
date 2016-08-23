@@ -109,36 +109,6 @@
 
         <plugins>
 
-            <!--plugin>
-                <groupId>com.spotify</groupId>
-                <artifactId>docker-maven-plugin</artifactId>
-                <version>0.4.11</version>
-                <executions>
-                    <execution>
-                        <id>fakecas</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>build</goal>
-                        </goals>
-                        <configuration>
-                            <dockerDirectory>src/main/resources/monolithic/osf/fakecas</dockerDirectory>
-                            <imageName>dataconservancy/cos-fakecas</imageName>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>osf-runtime</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>build</goal>
-                        </goals>
-                        <configuration>
-                            <dockerDirectory>src/main/resources/monolithic/osf/runtime</dockerDirectory>
-                            <imageName>dataconservancy/cos-osf-runtime</imageName>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin-->
-
             <plugin>
                 <groupId>io.fabric8</groupId>
                 <artifactId>docker-maven-plugin</artifactId>
