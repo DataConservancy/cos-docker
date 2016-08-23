@@ -40,7 +40,7 @@ This may seem a zero-sum proposition: you either spend time building the image (
 1. Install `docker-machine` and `docker-compose`, which can be found in the [Docker Toolbox](https://www.docker.com/products/docker-toolbox)
     * Insure that both commands are on your command path
     * The goal is to isolate the images and containers produced by this project from the CI platform environment, and to require stand-alone tools that can be installed by a systems administrator to support these builds.  Currently "Docker for Mac" and "Docker for Windows" is not supported.  They may be supported in the future if they can be reasonably tested.
-1. Create a Docker machine that will be used to run the containers and execute ITs
+1. Create a Docker machine that will be used to run the containers
     * On Mac or Linux: `docker-machine create -d virtualbox --virtualbox-disk-size 40000 --virtualbox-memory "2048" osf-docker-test`
     * On Windows: ??
 1. Java 8
