@@ -150,13 +150,13 @@
                                         <dockerFileDir>fakecas</dockerFileDir>
                                     </build>
                                 </image>
-                                <!--<image>
+                                <image>
                                     <alias>cos-osf-runtime</alias>
                                     <name>dataconservancy/cos-osf-runtime:latest</name>
                                     <build>
                                         <dockerFileDir>runtime</dockerFileDir>
                                     </build>
-                                </image>-->
+                                </image>
                             </images>
                         </configuration>
                     </execution>
