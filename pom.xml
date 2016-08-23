@@ -125,8 +125,8 @@
                 </configuration>
                 <executions>
                     <execution>
-                        <id>fakecas</id>
-                        <phase>package</phase>
+                        <id>build-images</id>
+                        <phase>prepare-package</phase>
                         <goals>
                             <goal>build</goal>
                         </goals>
@@ -140,6 +140,7 @@
                                     </build>
                                 </image>
                                 <!--<image>
+                                    <alias>cos-osf-runtime</alias>
                                     <name>dataconservancy/cos-osf-runtime:latest</name>
                                     <build>
                                         <dockerFileDir>runtime</dockerFileDir>
