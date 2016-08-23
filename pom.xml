@@ -255,6 +255,10 @@
                         <exclude>**/*.md</exclude>
                         <exclude>src/test/resources/json/**</exclude>
                         <exclude>**/*.json</exclude>
+                        <exclude>**/*.tmpl</exclude>
+                        <exclude>**/*.inc</exclude>
+                        <exclude>**/.env</exclude>
+                        <exclude>**/smb.conf</exclude>
                     </excludes>
                 </configuration>
             </plugin>
