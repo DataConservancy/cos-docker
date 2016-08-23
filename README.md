@@ -9,6 +9,8 @@ This repository provides Docker images for various services offered by the Cente
 
 These images may be orchestrated by using the docker-compose configuration provided in [src/main/resources/monolithic/osf/docker-compose.yaml](src/main/resources/monolithic/osf/docker-compose.yaml).
 
+Note that [Waterbutler](https://github.com/CenterForOpenScience/waterbutler) images are _not_ included at the moment, but they will be added in the future.
+
 # Use Case
 
 The primary use case of these Docker images is to produce Docker images of COS projects for local integration testing, using a Continuous Integration platform like Bamboo, Travis, etc.  Docker image sizes or the time to build the images is not a major concern.  The major concern is insuring that all the containers are consistent, and have reasonable start-up times.  Consistent in this context means that if multiple containers are going to be created from the same OSF.io codebase, that they all should be using the same git commit hash.  Reasonable start-up time means that containers must minimize any runtime initialization, such as source code compilation, package installation, javascript compacting, etc.  Therefore, the images can be rather large and take quite a bit of time to build, but they will be consistent and start up rapidly.  
