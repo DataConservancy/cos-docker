@@ -36,7 +36,25 @@
     <!-- Properties ================================================= -->
 
     <properties>
-        <!-- Properties used to set environment variables for docker-compose executions -->
+
+        <!--
+          Properties used to set environment variables for docker-compose executions, below.  These are special
+          environment variables used by the Docker Engine to talk to the Docker daemon.  Currently these property
+          values are hard-coded, and must be set for each build environment.  Externalizing these properties is
+          a TODO.
+        -->
+
+        <docker.host.url>tcp://192.168.99.100:2376</docker.host.url>
+        <docker.machine.name>osf-docker-test</docker.machine.name>
+        <docker.tls.verify>0</docker.tls.verify>
+
+        <!--
+          Properties used to set environment variables for docker-compose executions, below.  Ultimately, the values
+          specified in these Maven properties are used to interpolate Python settings files present in the Docker
+          containers at runtime.  They are passed to docker-compose, which in turn pass them into newly created
+          containers, where they are used by entry point scripts to perform interpolation.
+         -->
+
         <db.host>tokumx</db.host>
         <elastic.uri>elasticsearch</elastic.uri>
         <docker.osf.host>192.168.99.100:5000</docker.osf.host>
@@ -46,6 +64,7 @@
         <waterbutler.url>http://192.168.99.100:7777</waterbutler.url>
         <waterbutler.addrs>['192.168.99.100']</waterbutler.addrs>
         <toku.huge.pages>1</toku.huge.pages>
+
     </properties>
 
 
@@ -86,12 +105,6 @@
                 </plugin>
 
                 <plugin>
-                    <groupId>com.spotify</groupId>
-                    <artifactId>docker-maven-plugin</artifactId>
-                    <version>0.4.11</version>
-                </plugin>
-
-                <plugin>
                     <groupId>io.fabric8</groupId>
                     <artifactId>docker-maven-plugin</artifactId>
                     <version>0.15.16</version>
@@ -108,6 +121,12 @@
         </pluginManagement>
 
         <plugins>
+
+            <!--
+              The docker-maven-plugin is used to build fresh Docker images from the Docker files found in
+              src/main/resources/monolithic/osf.  Note it executes in the prepare-package phase, before any
+              Docker containers are started, or any ITs are executed.
+            -->
 
             <plugin>
                 <groupId>io.fabric8</groupId>
@@ -144,15 +163,22 @@
                 </executions>
             </plugin>
 
+            <!--
+              The exec-maven-plugin is used to invoke `docker-compose` to create containers prior to ITs, and to
+              destroy them after ITs run.  It makes Maven properties available to `docker-compose` as environment
+              variables.  Note that the plugin executes in `pre-integration-test` and `post-integration-test` phases,
+              to allow ITs to run in the `integration-test` phase.
+            -->
+
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
                 <configuration>
                     <workingDirectory>src/main/resources/monolithic/osf</workingDirectory>
                     <environmentVariables>
-                        <DOCKER_HOST>tcp://192.168.99.100:2376</DOCKER_HOST>
-                        <DOCKER_MACHINE_NAME>osf-docker-test</DOCKER_MACHINE_NAME>
-                        <DOCKER_TLS_VERIFY>0</DOCKER_TLS_VERIFY>
+                        <DOCKER_HOST>${docker.host.url}</DOCKER_HOST>
+                        <DOCKER_MACHINE_NAME>${docker.machine.name}</DOCKER_MACHINE_NAME>
+                        <DOCKER_TLS_VERIFY>${docker.tls.verify}</DOCKER_TLS_VERIFY>
                         <DB_HOST>${db.host}</DB_HOST>
                         <ELASTIC_URI>${elastic.uri}</ELASTIC_URI>
                         <DOCKER_OSF_HOST>${docker.osf.host}</DOCKER_OSF_HOST>
@@ -190,6 +216,15 @@
                 </executions>
             </plugin>
 
+            <!--
+              Integration tests run here, using failsafe defaults.
+            -->
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+            </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -223,7 +258,6 @@
                         <exclude>.travis.yml</exclude>
                         <exclude>travis_dc</exclude>
                         <exclude>**/*.md</exclude>
-                        <exclude>src/test/resources/json/**</exclude>
                         <exclude>**/*.json</exclude>
                         <exclude>**/*.tmpl</exclude>
                         <exclude>**/*.inc</exclude>
@@ -262,11 +296,6 @@
                     <localCheckout>true</localCheckout>
                     <pushChanges>false</pushChanges>
                 </configuration>
-            </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-failsafe-plugin</artifactId>
             </plugin>
 
         </plugins>
