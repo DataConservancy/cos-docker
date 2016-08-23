@@ -13,7 +13,7 @@ These images may be orchestrated by using the docker-compose configuration provi
 
 The primary use case of these Docker images is to produce Docker images of COS projects for local integration testing, using a Continuous Integration platform like Bamboo, Travis, etc.  Docker image sizes or the time to build the images is not a major concern.  The major concern is insuring that all the containers are consistent, and have reasonable start-up times.  Consistent in this context means that if multiple containers are going to be created from the same OSF.io codebase, that they all should be using the same git commit hash.  Reasonable start-up time means that containers must minimize any runtime initialization, such as source code compilation, package installation, javascript compacting, etc.  Therefore, the images can be rather large and take quite a bit of time to build, but they will be consistent and start up rapidly.  
 
-This may seem a zero-sum proposition: you either spend time building the image (and have a rapidly starting container) or spend little time building the image at the expense of a longer startup at runtime.  Past experience has shown that having containers do a lot of work on startup led to inconsistent environments.  Often containers would fail or hang during startup.  We should also note that a secondary goal is to enable developers to also use these images. Having the CI platform take the hit to building the image is the right thing to do: robust and quick start-up for your containers and let the CI platform do the heavy lifting.   
+This may seem a zero-sum proposition: you either spend time building the image (and have a rapidly starting container) or spend little time building the image at the expense of a longer startup at runtime.  Past experience has shown that having containers do a lot of work on startup led to inconsistent environments.  Often containers would fail or hang during startup.  We should also note that a secondary goal is to enable developers to also use these images. Finally, image build cost is incurred once, while runtime costs are incurred each time you create a container.  Having the CI platform take the hit to building the image is the right thing to do: robust and quick start-up for your containers and let the CI platform do the heavy lifting.   
 
 # How it works
 
@@ -24,7 +24,7 @@ This may seem a zero-sum proposition: you either spend time building the image (
     * Docker images are built from the [latest osf.io source code](https://github.com/CenterForOpenScience/osf.io)
     * Docker containers are spun up using `docker-compose`
     * Integration tests execute against the endpoints exposed by the Docker containers (e.g. the OSF v2 HTTP API)
-        * There is no support for executing integration tests "inside of" a container; they must execute against some endpoint that is exposed by the container: a HTTP port, database port, etc. 
+        * There is no support for executing integration tests "inside of" a container; they must execute against some endpoint that is exposed by the container: a HTTP port, database port, etc.
     * Docker images are pushed to the [Docker Hub](http://hub.docker.com/u/DataConservancy) if successful
 
 ## Details
@@ -48,7 +48,7 @@ This may seem a zero-sum proposition: you either spend time building the image (
 1. A modern Maven (3.3.x)
     * `mvn -v`
 1. Git    
-    
+
 # Try it
 
 1. Clone this repository
@@ -56,9 +56,6 @@ This may seem a zero-sum proposition: you either spend time building the image (
 1. Edit `pom.xml` (note this step will be deprecated in the future, but somehow the local Docker environment must be communicated to Maven).  Find the `<properties>` section, and edit the values for the following, copying the values from the previous step:
     * `docker.host.url`
     * `docker.machine.name`
-1. Run `mvn verify` 
+1. Run `mvn verify`
 1. Make a pizza from scratch, including crust.
 1. Consult output of `mvn verify`
-    
-
-
