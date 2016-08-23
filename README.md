@@ -56,7 +56,9 @@ This may seem a zero-sum proposition: you either spend time building the image (
 1. Edit `pom.xml` (note this step will be deprecated in the future, but somehow the local Docker environment must be communicated to Maven).  Find the `<properties>` section, and edit the values for the following, copying the values from the previous step:
     * `docker.host.url`
     * `docker.machine.name`
-1. Run `mvn verify`    
+1. Run `mvn verify` 
+1. Make a pizza from scratch, including crust.
+1. Consult output of `mvn verify`
     
 
 
