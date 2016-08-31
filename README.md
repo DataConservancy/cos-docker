@@ -2,14 +2,20 @@
 
 This repository provides Docker images for various services offered by the Center For Open Science (COS).  Currently provided are:
 
-* Open Science Framework UI
-* Open Science Framework v2 JSON API
+* Open Science Framework UI and v2 JSON API
 * FakeCAS
 * Service containers: rabbitmq, elasticsearch, tokumx
 
 These images may be orchestrated by using the docker-compose configuration provided in [src/main/resources/monolithic/osf/docker-compose.yaml](src/main/resources/monolithic/osf/docker-compose.yaml).
 
 Note that [Waterbutler](https://github.com/CenterForOpenScience/waterbutler) images are _not_ included at the moment, but they will be added in the future.
+
+* [Use Case](#use-case)
+* [How it works](#how-it-works)
+    * [Overview](#overview)
+    * [Details](#details)
+* [Requirements](#requirements)
+* [Try It](#try-it)
 
 # Use Case
 
@@ -57,6 +63,7 @@ It is anticipated that _external_ projects will have specific integrations with 
 
 # Try it
 
+1. Install and verify [requirements](#requirements)
 1. Clone this repository
 1. Consult the output of `docker-machine env osf-docker-test`
 1. Edit `pom.xml` (note this step will be deprecated in the future, but somehow the local Docker environment must be communicated to Maven).  Find the `<properties>` section, and edit the values for the following, copying the values from the previous step:
@@ -65,3 +72,8 @@ It is anticipated that _external_ projects will have specific integrations with 
 1. Run `mvn verify`
 1. Make a pizza from scratch, including crust.
 1. Consult output of `mvn verify`
+    * Insure build success
+    * `docker images | grep dataconservancy` should include
+        * `dataconservancy/cos-osf-runtime`
+        * `dataconservancy/cos-fakecas`
+1. cd `src/main/resources/monolithic/osf/` and invoke `docker-compose up`
