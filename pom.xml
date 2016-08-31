@@ -44,8 +44,8 @@
           a TODO.
         -->
 
-        <docker.host.url>tcp://192.168.99.100:2376</docker.host.url>
-        <docker.machine.name>osf-docker-test</docker.machine.name>
+        <docker.host.url>${env.DOCKER_HOST}</docker.host.url>
+        <docker.machine.name>${env.DOCKER_MACHINE_NAME}</docker.machine.name>
         <docker.tls.verify>0</docker.tls.verify>
 
         <!--
