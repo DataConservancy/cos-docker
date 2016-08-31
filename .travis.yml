@@ -5,7 +5,7 @@ install:
 - sudo chmod +x /tmp/docker-machine
 - /tmp/docker-machine -v
 - sudo mv /tmp/docker-machine /usr/local/bin/docker-machine
-- docker-machine create --url=tcp://54.236.237.175:2376 osf-docker-test
+- docker-machine create --driver none --url=tcp://54.236.237.175:2376 osf-docker-test
 - docker-machine env osf-docker-test
 - sh -c 'eval $(docker-machine env osf-docker-test) && docker ps -a'
 services:
