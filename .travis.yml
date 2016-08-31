@@ -7,13 +7,13 @@ install:
 - sudo chmod +x /tmp/docker-machine
 - /tmp/docker-machine -v
 - sudo mv /tmp/docker-machine /usr/local/bin/docker-machine
-- docker-machine create --driver amazonec2 --amazonec2-vpc-id vpc-afb03fc8 osf-docker-test4
-- docker-machine env osf-docker-test4 > .docker.env
+- docker-machine create --driver amazonec2 --amazonec2-vpc-id vpc-afb03fc8 osf-docker-test5
+- docker-machine env osf-docker-test5 > .docker.env
 services:
 - docker
 script: . .docker.env && mvn -X -e verify
-after_script: docker-machine rm osf-docker-test4
-after_failure: docker-machine rm osf-docker-test4
+after_script: docker-machine rm osf-docker-test5
+after_failure: docker-machine rm osf-docker-test5
 jdk:
 - oraclejdk8
 cache:
