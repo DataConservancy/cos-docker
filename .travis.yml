@@ -1,8 +1,10 @@
 language: java
 sudo: required
 install:
-- sudo curl -L https://github.com/docker/machine/releases/download/v0.8.1/docker-machine-Linux-x86_64 > /usr/local/bin/docker-machine
-- sudo chmod +x /usr/local/bin/docker-machine
+- sudo curl -L https://github.com/docker/machine/releases/download/v0.8.1/docker-machine-Linux-x86_64 > /tmp/docker-machine
+- sudo chmod +x /tmp/docker-machine
+- /tmp/docker-machine -v
+- sudo mv /tmp/docker-machine /usr/local/bin/docker-machine
 services:
 - docker
 script: mvn -X -e verify
