@@ -8,7 +8,6 @@ install:
 - /tmp/docker-machine -v
 - sudo mv /tmp/docker-machine /usr/local/bin/docker-machine
 - docker-machine create --driver amazonec2 --amazonec2-vpc-id vpc-afb03fc8 osf-docker-test2
-- docker-machine regenerate-certs osf-docker-test2
 - docker-machine env osf-docker-test2
 - env |grep DOCKER
 - sh -c 'eval $(docker-machine env osf-docker-test2) && docker ps -a'
