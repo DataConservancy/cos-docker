@@ -16,3 +16,6 @@ after_script: docker-machine rm osf-docker-test4
 after_failure: docker-machine rm osf-docker-test4
 jdk:
 - oraclejdk8
+cache:
+  directories:
+  - $HOME/.docker
