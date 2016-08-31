@@ -1,12 +1,16 @@
 language: java
 sudo: required
+before_install: openssl aes-256-cbc -K $encrypted_e1bb0fd9af1c_key -iv $encrypted_e1bb0fd9af1c_iv -in aws.tar.enc -out aws.tar -d
 install:
+- tar -C $HOME -xf aws.tar
 - sudo curl -L https://github.com/docker/machine/releases/download/v0.8.1/docker-machine-Linux-x86_64 > /tmp/docker-machine
 - sudo chmod +x /tmp/docker-machine
 - /tmp/docker-machine -v
 - sudo mv /tmp/docker-machine /usr/local/bin/docker-machine
-- docker-machine create --driver none --url=tcp://54.236.237.175:2376 osf-docker-test
+- docker-machine create --driver amazonec2 --amazonec2-vpc-id vpc-afb03fc8 osf-docker-test
+- docker-machine regenerate-certs osf-docker-test
 - docker-machine env osf-docker-test
+- env |grep DOCKER
 - sh -c 'eval $(docker-machine env osf-docker-test) && docker ps -a'
 services:
 - docker
