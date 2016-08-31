@@ -1,5 +1,9 @@
 language: java
-install: true
+sudo: required
+services:
+- docker
+install:
+- docker-machine create -d virtualbox --virtualbox-disk-size 40000 --virtualbox-memory "2048" osf-docker-test
 script: mvn verify
 jdk:
 - oraclejdk8
