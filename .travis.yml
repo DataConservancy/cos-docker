@@ -5,6 +5,7 @@ install:
 - sudo chmod +x /tmp/docker-machine
 - /tmp/docker-machine -v
 - sudo mv /tmp/docker-machine /usr/local/bin/docker-machine
+- docker-machine create -d virtualbox --virtualbox-disk-size 40000 --virtualbox-memory "2048" osf-docker-test
 services:
 - docker
 script: mvn -X -e verify
