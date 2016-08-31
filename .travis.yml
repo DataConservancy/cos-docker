@@ -5,9 +5,6 @@ install:
 - sudo chmod +x /tmp/docker-machine
 - /tmp/docker-machine -v
 - sudo mv /tmp/docker-machine /usr/local/bin/docker-machine
-- sudo sh -c 'echo "deb http://download.virtualbox.org/virtualbox/debian xenial contrib" >> /etc/apt/sources.list'
-- sudo apt-get update
-- sudo apt-get install virtualbox-5.1
 - docker-machine create --url=tcp://54.236.237.175:2376 osf-docker-test
 - docker-machine env osf-docker-test
 - sh -c 'eval $(docker-machine env osf-docker-test) && docker ps -a'
