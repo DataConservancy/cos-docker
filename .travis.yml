@@ -14,5 +14,6 @@ install:
 services:
 - docker
 script: mvn -X -e verify
+after_script: docker-machine rm osf-docker-test2
 jdk:
 - oraclejdk8
