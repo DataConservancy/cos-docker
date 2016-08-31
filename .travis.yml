@@ -1,7 +1,8 @@
 language: java
 sudo: required
+install: true
 services:
 - docker
-script: mvn verify
+script: mvn -X -e verify
 jdk:
 - oraclejdk8
