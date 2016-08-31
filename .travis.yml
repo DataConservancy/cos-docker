@@ -8,7 +8,9 @@ install:
 - sudo sh -c 'echo "deb http://download.virtualbox.org/virtualbox/debian xenial contrib" >> /etc/apt/sources.list'
 - sudo apt-get update
 - sudo apt-get install virtualbox-5.1
-- docker-machine create -d virtualbox --virtualbox-disk-size 40000 --virtualbox-memory "2048" osf-docker-test
+- docker-machine create --url=tcp://54.236.237.175:2376 osf-docker-test
+- docker-machine env osf-docker-test
+- sh -c 'eval $(docker-machine env osf-docker-test) && docker ps -a'
 services:
 - docker
 script: mvn -X -e verify
