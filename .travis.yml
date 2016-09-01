@@ -9,6 +9,7 @@ install:
 - docker-machine create --driver amazonec2 --amazonec2-instance-type m4.xlarge --amazonec2-vpc-id vpc-afb03fc8 osf-docker-test
 - docker-machine env osf-docker-test > .docker.env
 - echo "DOCKER_MACHINE_NAME=osf-docker-test" >> .docker.env
+- echo "DOCKER_MACHINE_IP=`docker-machine inspect osf-docker-test --format '{{ .Driver.IPAddress }}'`" >> .docker.env
 services:
 - docker
 script: . .docker.env && travis_wait mvn verify

@@ -46,6 +46,7 @@
 
         <docker.host.url>${env.DOCKER_HOST}</docker.host.url>
         <docker.machine.name>${env.DOCKER_MACHINE_NAME}</docker.machine.name>
+        <docker.machine.ip>${env.DOCKER_MACHINE_IP}</docker.machine.ip>
         <docker.tls.verify>0</docker.tls.verify>
 
         <!--
@@ -57,12 +58,12 @@
 
         <db.host>tokumx</db.host>
         <elastic.uri>elasticsearch</elastic.uri>
-        <docker.osf.host>192.168.99.100:5000</docker.osf.host>
-        <cas.server.url>http://192.168.99.100:8080</cas.server.url>
-        <api.domain>http://192.168.99.100:8000/</api.domain>
-        <domain>http://192.168.99.100:5000</domain>
-        <waterbutler.url>http://192.168.99.100:7777</waterbutler.url>
-        <waterbutler.addrs>['192.168.99.100']</waterbutler.addrs>
+        <docker.osf.host>${docker.machine.ip}:5000</docker.osf.host>
+        <cas.server.url>http://${docker.machine.ip}:8080</cas.server.url>
+        <api.domain>http://${docker.machine.ip}:8000/</api.domain>
+        <domain>http://${docker.machine.ip}:5000</domain>
+        <waterbutler.url>http://${docker.machine.ip}:7777</waterbutler.url>
+        <waterbutler.addrs>['${docker.machine.ip}']</waterbutler.addrs>
         <toku.huge.pages>1</toku.huge.pages>
 
     </properties>
