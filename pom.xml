@@ -149,6 +149,11 @@
               Docker containers are started, or any ITs are executed.
             -->
 
+            <!--
+              TODO: Tonsider removing this plugin, and building images with ant targets.  Removing this
+              plugin will remove the requirement on docker-machine being available in the build environment.
+            -->
+
             <plugin>
                 <groupId>io.fabric8</groupId>
                 <artifactId>docker-maven-plugin</artifactId>
@@ -219,7 +224,7 @@
                           <goal>exec</goal>
                       </goals>
                       <configuration>
-                          <!-- TODO make this platform independent with ant plugin -->
+                          <!-- TODO make this copy platform independent with ant plugin -->
                           <executable>cp</executable>
                           <commandlineArgs>${project.build.outputDirectory}/monolithic/osf/docker-compose.env.tmpl ${project.build.outputDirectory}/monolithic/osf/.env</commandlineArgs>
                       </configuration>

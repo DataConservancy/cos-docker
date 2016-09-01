@@ -2,8 +2,8 @@
 
 This repository provides Docker images for various services offered by the Center For Open Science (COS).  Currently provided are:
 
-* `dataconservancy/cos-osf-runtime`: Open Science Framework UI and v2 JSON API
-* `dataconservancy/cos-fakecas`: FakeCAS
+* `dataconservancy/cos-osf-runtime`: image for Open Science Framework UI and v2 JSON API containers
+* `dataconservancy/cos-fakecas`: image for FakeCAS container
 
 Want to get to it?  Jump to [requirements](#requirements).
 
