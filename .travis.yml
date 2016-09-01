@@ -12,7 +12,8 @@ install:
 services:
 - docker
 script: . .docker.env && mvn verify
-after_script: docker-machine rm -f osf-docker-test
-after_failure: docker-machine rm -f osf-docker-test
+# leave container so it can be debugged
+#after_script: docker-machine rm -f osf-docker-test
+#after_failure: docker-machine rm -f osf-docker-test
 jdk:
 - oraclejdk8
