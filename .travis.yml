@@ -6,7 +6,7 @@ install:
 - sudo sh -c 'curl -L https://github.com/docker/machine/releases/download/v0.8.1/docker-machine-Linux-x86_64 > /usr/local/bin/docker-machine'
 - sudo chmod +x /usr/local/bin/docker-machine
 - docker-machine -v
-- docker-machine create --driver amazonec2 --amazonec2-vpc-id vpc-afb03fc8 osf-docker-test
+- docker-machine create --driver amazonec2 --amazon-ec2-instance-type t2.medium --amazonec2-vpc-id vpc-afb03fc8 osf-docker-test
 - docker-machine env osf-docker-test > .docker.env
 - echo "DOCKER_MACHINE_NAME=osf-docker-test" >> .docker.env
 services:
