@@ -170,7 +170,7 @@ RUN \
 RUN \
     # Install npm dependencies from 'package.json'
     # - stored in ${NPM_CACHE}
-    PYTHON=/usr/bin/python npm -q install
+    npm -d install
 
 RUN \
     # Set permissions on the cache
