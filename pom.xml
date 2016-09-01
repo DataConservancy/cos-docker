@@ -298,6 +298,7 @@
                         <exclude>**/smb.conf</exclude>
                         <exclude>aws.tar</exclude>
                         <exclude>.docker.env</exclude>
+                        <exclude>travis*log</exclude>
                     </excludes>
                 </configuration>
             </plugin>
