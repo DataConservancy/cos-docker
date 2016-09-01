@@ -67,7 +67,6 @@ WORKDIR ${CODE}
 # Done in one large RUN to minimize the size of the image
 
 RUN \
-
     # Install Alpine packages
     # - includes dependencies necessary for python and python wheels
     apk --no-cache update && \
@@ -97,58 +96,45 @@ RUN \
       pip install \
         invoke==0.13.0 \
         uwsgi==2.0.13.1 \
-        wheel && \
+        wheel
 
+RUN \
     # Clone the OSF git repository, which contains the requirements being
     # installed
     git clone -b $OSF_BRANCH $OSF_REPO . \
-    && cp website/settings/local-dist.py website/settings/local.py \
+    && cp website/settings/local-dist.py website/settings/local.py
 
+RUN \
     # Install the Python development dependencies as 'wheels' in the
     # WHEELHOUSE
     # - use custom Invoke configuration from /tmp/invoke.yaml
-    && WHEELHOUSE=${WHEELHOUSE} PYTHONIOENCODING="utf_8:ignore" \
-      invoke -f ${TMP}/invoke.yaml wheelhouse --dev \
+    WHEELHOUSE=${WHEELHOUSE} PYTHONIOENCODING="utf_8:ignore" \
+      invoke -f ${TMP}/invoke.yaml wheelhouse --dev
 
+RUN \
     # Install the Python addon dependencies as 'wheels' in the
     # WHEELHOUSE
     # - use custom Invoke configuration from /tmp/invoke.yaml
-    && WHEELHOUSE=${WHEELHOUSE} PYTHONIOENCODING="utf_8:ignore" \
-      invoke -f ${TMP}/invoke.yaml wheelhouse --addons \
+    WHEELHOUSE=${WHEELHOUSE} PYTHONIOENCODING="utf_8:ignore" \
+      invoke -f ${TMP}/invoke.yaml wheelhouse --addons
 
+RUN \
     # Install Python base, development, and addon dependencies from the
     # WHEELHOUSE
-    && WHEELHOUSE=${WHEELHOUSE} PYTHONIOENCODING="utf_8:ignore" \
-      invoke -f ${TMP}/invoke.yaml requirements --quick && \
+    WHEELHOUSE=${WHEELHOUSE} PYTHONIOENCODING="utf_8:ignore" \
+      invoke -f ${TMP}/invoke.yaml requirements --quick
 
+RUN \
     # A hack to get around some dependency conflicts with uritemplate in the
     # GitHub addon (see OSF.io /.travis.yml and /Dockerfile)
     (pip uninstall uritemplate.py --yes || true) \
-          && pip install --no-cache-dir uritemplate.py==0.3.0 && \
-
-    # Set permissions on the wheelhouse
-    chown -R nobody:nobody ${WHEELHOUSE} && \
-
-    # Clean up APK packages to reduce layer size
-    apk --no-cache del \
-      bash \
-      # python \
-      # python-dev \
-      # py-pip \
-      libffi-dev \
-      libxslt-dev \
-      libxml2-dev \
-      openssl-dev \
-      gcc \
-      g++ \
-      musl \
-      musl-dev \
-      linux-headers \
-      git \
-      gosu
+          && pip install --no-cache-dir uritemplate.py==0.3.0
 
 RUN \
+    # Set permissions on the wheelhouse
+    chown -R nobody:nobody ${WHEELHOUSE}
 
+RUN \
     # Install Alpine packages
     apk --no-cache update && \
       apk --no-cache add \
@@ -169,45 +155,47 @@ RUN \
         libffi \
         libxslt \
         libxml2 \
-        openssl && \
+        openssl
 
+RUN \
     # npm configuration
     # - sets a global cache directory, ultimately exported as a Docker volume
-    npm config set cache ${NPM_CACHE} -g && \
+    npm config set cache ${NPM_CACHE} -g
 
+RUN \
     # bower configuration
     # - sets a packages directory, ultimately exported as a Docker volume
-    cat ${TMP}/bowerrc.tmpl | envsubst > ~/.bowerrc && \
+    cat ${TMP}/bowerrc.tmpl | envsubst > ~/.bowerrc
 
+RUN \
     # Install npm dependencies from 'package.json'
     # - stored in ${NPM_CACHE}
-    PYTHON=/usr/bin/python npm -q install || cat /tmp/osf/npm-debug.log && \
+    PYTHON=/usr/bin/python npm -q install || cat /tmp/osf/npm-debug.log
 
+RUN \
     # Set permissions on the cache
-    chown -R nobody:nobody ${NPM_CACHE} && \
+    chown -R nobody:nobody ${NPM_CACHE}
 
+RUN \
     # Install bower-managed dependencies
     node_modules/bower/bin/bower -q --allow-root prune && \
-    node_modules/bower/bin/bower -q --allow-root install && \
+    node_modules/bower/bin/bower -q --allow-root install
 
+RUN \
     # Set permissions on node modules and bower files
     chown -R nobody:nobody ${SHARED}/bower && \
-    chown -R nobody:nobody ${CODE}/node_modules && \
+    chown -R nobody:nobody ${CODE}/node_modules
 
-    invoke -f ${TMP}/invoke.yaml build_js_config_files && \
-    invoke -d -f ${TMP}/invoke.yaml webpack --dev && \
-    invoke -f ${TMP}/invoke.yaml copy_settings --addons && \
+RUN \
+    invoke -f ${TMP}/invoke.yaml build_js_config_files
 
-    # Clean up (leave python, bash, gettext and runtime deps noted above)
-    apk del \
-      git \
-      coreutils \
-      make \
-      musl \
-      musl-dev \
-      gcc \
-      g++ && \
+RUN \
+    invoke -d -f ${TMP}/invoke.yaml webpack --dev
 
+RUN \
+    invoke -f ${TMP}/invoke.yaml copy_settings --addons
+
+RUN \
     rm -rf ${TMP}/*
 
 COPY website/ website/
