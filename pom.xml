@@ -195,7 +195,7 @@
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
                 <configuration>
-                    <workingDirectory>src/main/resources/monolithic/osf</workingDirectory>
+                    <workingDirectory>${project.build.outputDirectory}/monolithic/osf</workingDirectory>
                     <environmentVariables>
                         <DOCKER_HOST>${docker.host.url}</DOCKER_HOST>
                         <DOCKER_MACHINE_NAME>${docker.machine.name}</DOCKER_MACHINE_NAME>
@@ -220,7 +220,7 @@
                       </goals>
                       <configuration>
                           <executable>cp</executable>
-                          <commandlineArgs>-f ${project.build.outputDirectory}/monolithic/osf/docker-compose.env.tmpl ${project.baseDir}/.env</commandlineArgs>
+                          <commandlineArgs>${project.build.outputDirectory}/monolithic/osf/docker-compose.env.tmpl ${project.build.outputDirectory}/monolithic/osf/.env</commandlineArgs>
                       </configuration>
                   </execution>
                     <execution>
