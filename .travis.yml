@@ -1,5 +1,8 @@
 language: java
 sudo: required
+cache:
+  directories:
+  - $HOME/.m2
 before_install: openssl aes-256-cbc -K $encrypted_e1bb0fd9af1c_key -iv $encrypted_e1bb0fd9af1c_iv -in aws.tar.enc -out aws.tar -d
 install:
 - tar -C $HOME -xf aws.tar
