@@ -220,7 +220,7 @@
                       </goals>
                       <configuration>
                           <executable>cp</executable>
-                          <commandlineArgs>-f ${project.outputDirectory}/monolithic/osf/docker-compose.env.tmpl ${project.baseDir}/.env</commandlineArgs>
+                          <commandlineArgs>-f ${project.build.outputDirectory}/monolithic/osf/docker-compose.env.tmpl ${project.baseDir}/.env</commandlineArgs>
                       </configuration>
                   </execution>
                     <execution>
