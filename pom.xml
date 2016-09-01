@@ -73,6 +73,26 @@
 
     <build>
 
+        <resources>
+
+            <resource>
+                <directory>src/main/resources</directory>
+                <includes>
+                    <include>monolithic/osf/docker-compose.env.tmpl</include>
+                </includes>
+                <filtering>true</filtering>
+            </resource>
+
+            <resource>
+                <directory>src/main/resources</directory>
+                <excludes>
+                    <exclude>monolithic/osf/docker-compose.env.tmpl</exclude>
+                </excludes>
+                <filtering>false</filtering>
+            </resource>
+
+        </resources>
+
         <pluginManagement>
 
             <plugins>
@@ -192,6 +212,17 @@
                     </environmentVariables>
                 </configuration>
                 <executions>
+                  <execution>
+                      <id>prepare-docker-compose-env</id>
+                      <phase>pre-integration-test</phase>
+                      <goals>
+                          <goal>exec</goal>
+                      </goals>
+                      <configuration>
+                          <executable>cp</executable>
+                          <commandlineArgs>-f ${project.outputDirectory}/monolithic/osf/docker-compose.env.tmpl ${project.baseDir}/.env</commandlineArgs>
+                      </configuration>
+                  </execution>
                     <execution>
                         <id>docker-compose-up</id>
                         <phase>pre-integration-test</phase>
