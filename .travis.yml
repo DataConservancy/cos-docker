@@ -11,7 +11,7 @@ install:
 - echo "DOCKER_MACHINE_NAME=osf-docker-test" >> .docker.env
 services:
 - docker
-script: . .docker.env && travis_wait mvn verify
+script: . .docker.env && mvn verify
 after_script: docker-machine rm -f osf-docker-test
 after_failure: docker-machine rm -f osf-docker-test
 jdk:
