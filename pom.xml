@@ -296,6 +296,8 @@
                         <exclude>**/*.inc</exclude>
                         <exclude>**/.env</exclude>
                         <exclude>**/smb.conf</exclude>
+                        <exclude>aws.tar</exclude>
+                        <exclude>.docker.env</exclude>
                     </excludes>
                 </configuration>
             </plugin>
