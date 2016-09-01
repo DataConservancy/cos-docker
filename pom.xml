@@ -219,6 +219,7 @@
                           <goal>exec</goal>
                       </goals>
                       <configuration>
+                          <!-- TODO make this platform independent with ant plugin -->
                           <executable>cp</executable>
                           <commandlineArgs>${project.build.outputDirectory}/monolithic/osf/docker-compose.env.tmpl ${project.build.outputDirectory}/monolithic/osf/.env</commandlineArgs>
                       </configuration>
