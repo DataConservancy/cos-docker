@@ -16,8 +16,7 @@ install:
 services:
 - docker
 script: . .docker.env && travis_wait mvn verify
-# leave container so it can be debugged
-#after_script: docker-machine rm -f osf-docker-test
+after_script: docker-machine rm -f osf-docker-test
 after_failure: cat target/rat.txt
 jdk:
 - oraclejdk8
