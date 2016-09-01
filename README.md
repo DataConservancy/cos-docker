@@ -2,9 +2,12 @@
 
 This repository provides Docker images for various services offered by the Center For Open Science (COS).  Currently provided are:
 
-* Open Science Framework UI and v2 JSON API
-* FakeCAS
-* Service containers: rabbitmq, elasticsearch, tokumx
+* `dataconservancy/cos-osf-runtime`: Open Science Framework UI and v2 JSON API
+* `dataconservancy/cos-fakecas`: FakeCAS
+
+Want to get to it?  Jump to [requirements](#requirements).
+
+# Introduction
 
 These images may be orchestrated by using the docker-compose configuration provided in [src/main/resources/monolithic/osf/docker-compose.yaml](src/main/resources/monolithic/osf/docker-compose.yaml).
 
@@ -21,7 +24,9 @@ Note that [Waterbutler](https://github.com/CenterForOpenScience/waterbutler) ima
 
 The primary use case of these Docker images is to produce Docker images of COS projects for local integration testing, using a Continuous Integration platform like Bamboo, Travis, etc.  Docker image sizes or the time to build the images is not a major concern.  The major concern is insuring that all the containers are consistent, and have reasonable start-up times.  Consistent in this context means that if multiple containers are going to be created from the same OSF.io codebase, that they all should be using the same git commit hash.  Reasonable start-up time means that containers must minimize any runtime initialization, such as source code compilation, package installation, javascript compacting, etc.  Therefore, the images can be rather large and take quite a bit of time to build, but they will be consistent and start up rapidly.  
 
-This may seem a zero-sum proposition: you either spend time building the image (and have a rapidly starting container) or spend little time building the image at the expense of a longer startup at runtime.  Past experience has shown that having containers do a lot of work on startup led to inconsistent environments.  Often containers would fail or hang during startup.  We should also note that a secondary goal is to enable developers to also use these images. Finally, image build cost is incurred once, while runtime costs are incurred each time you create a container.  Having the CI platform take the hit to building the image is the right thing to do: robust and quick start-up for your containers and let the CI platform do the heavy lifting.   
+This may seem a zero-sum proposition: you either spend time building the image (and have a rapidly starting container) or spend little time building the image at the expense of a longer startup at runtime.  Past experience has shown that having containers do a lot of work on startup led to inconsistent environments; containers would fail or hang during startup.  
+
+Finally, image build cost is incurred once, while runtime costs are incurred each time you create a container.  Having the CI platform take the hit to building the image is the right thing to do: robust and quick start-up for your containers and let the CI platform do the heavy lifting.   
 
 # How it works
 
@@ -52,9 +57,11 @@ It is anticipated that _external_ projects will have specific integrations with 
 1. Install `docker-machine` and `docker-compose`, which can be found in the [Docker Toolbox](https://www.docker.com/products/docker-toolbox)
     * Insure that both commands are on your command path
     * The goal is to isolate the images and containers produced by this project from the CI platform environment, and to require stand-alone tools that can be installed by a systems administrator to support these builds.  Currently "Docker for Mac" and "Docker for Windows" is not supported.  They may be supported in the future if they can be reasonably tested.
-1. Create a Docker machine that will be used to run the containers
-    * On Mac or Linux: `docker-machine create -d virtualbox --virtualbox-disk-size 40000 --virtualbox-memory "2048" osf-docker-test`
-    * On Windows: ??
+1. Create a Docker machine that will be used to run the containers, and make it your active machine:
+    * Create the machine:
+        * On Mac or Linux: `docker-machine create -d virtualbox --virtualbox-disk-size 40000 --virtualbox-memory "2048" osf-docker-test`
+        * On Windows: ??
+    * Make it your active machine: `eval $(docker-machine env osf-docker-test)`
 1. Java 8
     * `java -version`
 1. A modern Maven (3.3.x)
