@@ -3,17 +3,16 @@ sudo: required
 before_install: openssl aes-256-cbc -K $encrypted_e1bb0fd9af1c_key -iv $encrypted_e1bb0fd9af1c_iv -in aws.tar.enc -out aws.tar -d
 install:
 - tar -C $HOME -xf aws.tar
-- sudo curl -L https://github.com/docker/machine/releases/download/v0.8.1/docker-machine-Linux-x86_64 > /tmp/docker-machine
-- sudo chmod +x /tmp/docker-machine
-- /tmp/docker-machine -v
-- sudo mv /tmp/docker-machine /usr/local/bin/docker-machine
-- docker-machine create --driver amazonec2 --amazonec2-vpc-id vpc-afb03fc8 osf-docker-test8
-- docker-machine env osf-docker-test8 > .docker.env
-- echo "DOCKER_MACHINE_NAME=osf-docker-test8" >> .docker.env
+- sudo sh -c 'curl -L https://github.com/docker/machine/releases/download/v0.8.1/docker-machine-Linux-x86_64 > /usr/local/bin/docker-machine'
+- sudo chmod +x /usr/local/bin/docker-machine
+- docker-machine -v
+- docker-machine create --driver amazonec2 --amazonec2-vpc-id vpc-afb03fc8 osf-docker-test
+- docker-machine env osf-docker-test > .docker.env
+- echo "DOCKER_MACHINE_NAME=osf-docker-test" >> .docker.env
 services:
 - docker
 script: . .docker.env && travis_wait mvn verify
-after_script: docker-machine rm osf-docker-test8
-after_failure: docker-machine rm osf-docker-test8
+after_script: docker-machine rm -f osf-docker-test
+after_failure: docker-machine rm -f osf-docker-test
 jdk:
 - oraclejdk8
