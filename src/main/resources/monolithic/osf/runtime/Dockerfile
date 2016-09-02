@@ -44,7 +44,7 @@ ENV CODE=${CODE:-${SHARED}/code/osf.io} \
     NPM_CACHE=${NPM_CACHE:-${SHARED}/npm} \
     BOWER_PACKAGES=${BOWER_PACKAGES:-${SHARED}/bower/packages} \
     OSF_REPO=${OSF_REPO:-https://github.com/emetsger/osf.io.git}  \
-    OSF_BRANCH=${OSF_BRANCH:-develop}
+    OSF_BRANCH=${OSF_BRANCH:-docker-support}
 
 # Python Invoke configuration
 # - avoids configuring a pty, to avoid unicode encoding errors like:
@@ -103,6 +103,9 @@ RUN \
     # installed
     git clone -b $OSF_BRANCH $OSF_REPO . \
     && cp website/settings/local-dist.py website/settings/local.py
+
+RUN \
+    echo "Cloned ${OSF_REPO} (${OSF_BRANCH}) `git rev-parse HEAD`"
 
 RUN \
     # Install the Python development dependencies as 'wheels' in the

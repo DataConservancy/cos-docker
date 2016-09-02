@@ -1,0 +1,125 @@
+#
+#  Copyright 2016 Johns Hopkins University
+#
+#  Licensed under the Apache License, Version 2.0 (the "License");
+#  you may not use this file except in compliance with the License.
+#  You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+#  Unless required by applicable law or agreed to in writing, software
+#  distributed under the License is distributed on an "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#  See the License for the specific language governing permissions and
+#  limitations under the License.
+#
+FROM alpine:3.4
+
+MAINTAINER Data Conservancy <dc-ird@googlegroups.com>
+LABEL description = "Provides runtime for Waterbutler"
+
+# Expose each environment variable as a build argument
+# This allows the author of docker-compose.yaml files
+# to choose between 'build' or 'image' instructions
+# and still set environment variables. (Setting
+# environment variables are not supported when using
+# the 'build' instruction).
+
+ARG SHARED
+ARG TMP
+ARG CODE
+ARG WHEELHOUSE
+ARG WB_REPO
+ARG WB_BRANCH
+ARG CONFIG_DIR
+
+# Provide sane default values for environment
+# variables, but prefer the ARG version if it
+# is available.
+
+ENV SHARED=${SHARED:-/shared} TMP=${TMP:-/tmp} CONFIG_DIR=${CONFIG_DIR:-/tmp/cos}
+ENV CODE=${CODE:-${SHARED}/code/waterbutler} \
+    WHEELHOUSE=${WHEELHOUSE:-${SHARED}/wheelhouse/27} \
+    WB_REPO=${WB_REPO:-https://github.com/emetsger/waterbutler}  \
+    WB_BRANCH=${WB_BRANCH:-docker-support}
+    
+RUN mkdir -p ${CODE}
+
+WORKDIR ${CODE}
+
+RUN \
+
+    apk --no-cache update && \
+    apk --no-cache add \
+        bash \
+        python3 \
+        python3-dev \
+        py-pip \
+        libffi-dev \
+        libxslt-dev \
+        libxml2-dev \
+        gcc \
+        g++ \
+        musl \
+        musl-dev \
+        linux-headers \
+        git \
+        libevent \
+        libevent-dev \
+        # envsubst required to interpolate settings files with environment variables
+        gettext \
+        zlib \
+        zlib-dev && \
+    apk --no-cache add \
+        --allow-untrusted \
+        --repository http://dl-3.alpinelinux.org/alpine/edge/testing/ \
+        libressl-dev \
+        gosu
+
+RUN \
+        python3 -m ensurepip && \
+        rm -r /usr/lib/python*/ensurepip && \
+        pip3 install --upgrade pip setuptools && \
+        rm -r /root/.cache
+
+RUN \
+    # Install pip, invoke, and wheel
+    pip3 install \
+        invoke==0.12.2 \
+        wheel
+
+RUN \
+    # Clone the WB git repository
+    git clone -b $WB_BRANCH $WB_REPO .
+
+RUN \
+    echo "Cloned ${WB_REPO} (${WB_BRANCH}) `git rev-parse HEAD`"
+
+RUN \
+    # Download python dependencies into the "wheelhouse"
+    WHEELHOUSE=${WHEELHOUSE} PYTHONIOENCODING="utf_8:ignore" \
+    invoke wheelhouse --develop --no-pty
+
+RUN \
+    # Install python dependencies
+    WHEELHOUSE=${WHEELHOUSE} PYTHONIOENCODING="utf_8:ignore" \
+    invoke install --develop --no-pty
+
+RUN \
+    # Create a directory for the Waterbutler configuration
+    mkdir -p ${CONFIG_DIR}
+
+COPY \
+    # Copy template Waterbutler configuration file to config dir
+    # The template will be interpolated at runtime by the entrypoint
+    waterbutler-test.json.tmpl ${CONFIG_DIR}
+
+COPY entrypoint.sh /entrypoint.sh
+
+RUN chmod +x /entrypoint.sh
+
+ENTRYPOINT [ "/entrypoint.sh" ]
+
+EXPOSE 7777
+
+CMD [ "invoke", "server" ]

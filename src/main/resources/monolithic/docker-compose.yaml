@@ -41,6 +41,8 @@ services:
       - tokumx:tokumx
       - rabbitmq:rabbitmq
       - elasticsearch:elasticsearch
+    depends_on:
+      - cos_waterbutler
     expose:
       - 8000
     ports:
@@ -56,6 +58,8 @@ services:
       - rabbitmq:rabbitmq
       - elasticsearch:elasticsearch
       - cos_fakecas:fakecas
+    depends_on:
+      - cos_waterbutler
     expose:
       - 5000
     ports:
@@ -72,3 +76,14 @@ services:
       - 8080
     ports:
       - "8080:8080"
+
+  cos_waterbutler:
+    image: dataconservancy/cos-waterbutler:latest
+    container_name: cos-waterbutler
+    env_file: .env
+    links:
+      - elasticsearch:elasticsearch
+    expose:
+      - 7777
+    ports:
+      - "7777:7777"
