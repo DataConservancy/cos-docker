@@ -158,7 +158,7 @@
                 <groupId>io.fabric8</groupId>
                 <artifactId>docker-maven-plugin</artifactId>
                 <configuration>
-                    <sourceDirectory>src/main/resources/monolithic/osf</sourceDirectory>
+                    <sourceDirectory>src/main/resources/monolithic</sourceDirectory>
                 </configuration>
                 <executions>
                     <execution>
@@ -180,7 +180,14 @@
                                     <alias>cos-osf-runtime</alias>
                                     <name>dataconservancy/cos-osf-runtime:latest</name>
                                     <build>
-                                        <dockerFileDir>runtime</dockerFileDir>
+                                        <dockerFileDir>osf/runtime</dockerFileDir>
+                                    </build>
+                                </image>
+                                <image>
+                                    <alias>cos-waterbutler</alias>
+                                    <name>dataconservancy/cos-waterbutler:latest</name>
+                                    <build>
+                                        <dockerFileDir>waterbutler</dockerFileDir>
                                     </build>
                                 </image>
                             </images>
@@ -226,7 +233,7 @@
                       <configuration>
                           <!-- TODO make this copy platform independent with ant plugin -->
                           <executable>cp</executable>
-                          <commandlineArgs>${project.build.outputDirectory}/monolithic/osf/docker-compose.env.tmpl ${project.build.outputDirectory}/monolithic/osf/.env</commandlineArgs>
+                          <commandlineArgs>${project.build.outputDirectory}/monolithic/docker-compose.env.tmpl ${project.build.outputDirectory}/monolithic/.env</commandlineArgs>
                       </configuration>
                   </execution>
                     <execution>
