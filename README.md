@@ -75,7 +75,7 @@ It is anticipated that _external_ projects will have specific integrations with 
 1. Consult the output of `docker-machine env osf-docker-test`
 1. Export the following shell variables:
     * export DOCKER_MACHINE_NAME=osf-docker-test
-    * export DOCKER_MACHINE_IP=`docker-machine inspect ${DOCKER_MACHINE_NAME} --format '{{ .Driver.IPAddress }}'`
+    * export DOCKER_MACHINE_IP=\`docker-machine inspect ${DOCKER_MACHINE_NAME} --format '{{ .Driver.IPAddress }}'\`
 1. Run `mvn verify`
 1. Make a pizza from scratch, including crust.
 1. Consult output of `mvn verify`
