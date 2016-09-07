@@ -112,14 +112,14 @@ RUN \
     # WHEELHOUSE
     # - use custom Invoke configuration from /tmp/invoke.yaml
     WHEELHOUSE=${WHEELHOUSE} PYTHONIOENCODING="utf_8:ignore" \
-      invoke -f ${TMP}/invoke.yaml wheelhouse --dev
+      invoke -f ${TMP}/invoke.yaml wheelhouse --dev --no-pty
 
 RUN \
     # Install the Python addon dependencies as 'wheels' in the
     # WHEELHOUSE
     # - use custom Invoke configuration from /tmp/invoke.yaml
     WHEELHOUSE=${WHEELHOUSE} PYTHONIOENCODING="utf_8:ignore" \
-      invoke -f ${TMP}/invoke.yaml wheelhouse --addons
+      invoke -f ${TMP}/invoke.yaml wheelhouse --addons --no-pty
 
 RUN \
     # Install Python base, development, and addon dependencies from the
