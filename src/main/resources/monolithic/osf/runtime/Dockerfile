@@ -44,7 +44,7 @@ ENV CODE=${CODE:-${SHARED}/code/osf.io} \
     NPM_CACHE=${NPM_CACHE:-${SHARED}/npm} \
     BOWER_PACKAGES=${BOWER_PACKAGES:-${SHARED}/bower/packages} \
     OSF_REPO=${OSF_REPO:-https://github.com/emetsger/osf.io.git}  \
-    OSF_BRANCH=${OSF_BRANCH:-no-pty}
+    OSF_BRANCH=${OSF_BRANCH:-docker-support}
 
 # Python Invoke configuration
 # - avoids configuring a pty, to avoid unicode encoding errors like:
