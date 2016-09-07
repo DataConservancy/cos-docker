@@ -4,14 +4,14 @@ This repository provides Docker images for various services offered by the Cente
 
 * `dataconservancy/cos-osf-runtime`: image for Open Science Framework UI and v2 JSON API containers
 * `dataconservancy/cos-fakecas`: image for FakeCAS container
+* `dataconservancy/cos-waterbutler`: image for Waterbutler, which provides storage components for OSF
 
 Want to get to it?  Jump to [requirements](#requirements).
 
 # Introduction
 
-These images may be orchestrated by using the docker-compose configuration provided in [src/main/resources/monolithic/osf/docker-compose.yaml](src/main/resources/monolithic/osf/docker-compose.yaml).
+These images may be orchestrated by using the docker-compose configuration provided in [src/main/resources/monolithic/docker-compose.yaml](src/main/resources/monolithic/docker-compose.yaml).
 
-Note that [Waterbutler](https://github.com/CenterForOpenScience/waterbutler) images are _not_ included at the moment, but they will be added in the future.
 
 * [Use Case](#use-case)
 * [How it works](#how-it-works)
@@ -73,9 +73,9 @@ It is anticipated that _external_ projects will have specific integrations with 
 1. Install and verify [requirements](#requirements)
 1. Clone this repository
 1. Consult the output of `docker-machine env osf-docker-test`
-1. Edit `pom.xml` (note this step will be deprecated in the future, but somehow the local Docker environment must be communicated to Maven).  Find the `<properties>` section, and edit the values for the following, copying the values from the previous step:
-    * `docker.host.url`
-    * `docker.machine.name`
+1. Export the following shell variables:
+    * export DOCKER_MACHINE_NAME=osf-docker-test
+    * export DOCKER_MACHINE_IP=`docker-machine inspect ${DOCKER_MACHINE_NAME} --format '{{ .Driver.IPAddress }}'`
 1. Run `mvn verify`
 1. Make a pizza from scratch, including crust.
 1. Consult output of `mvn verify`
@@ -83,4 +83,5 @@ It is anticipated that _external_ projects will have specific integrations with 
     * `docker images | grep dataconservancy` should include
         * `dataconservancy/cos-osf-runtime`
         * `dataconservancy/cos-fakecas`
+        * `dataconservancy/cos-waterbutler`
 1. cd `src/main/resources/monolithic/osf/` and invoke `docker-compose up`
