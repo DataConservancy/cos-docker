@@ -78,7 +78,7 @@
             <resource>
                 <directory>src/main/resources</directory>
                 <includes>
-                    <include>monolithic/osf/docker-compose.env.tmpl</include>
+                    <include>monolithic/docker-compose.env.tmpl</include>
                 </includes>
                 <filtering>true</filtering>
             </resource>
@@ -86,7 +86,7 @@
             <resource>
                 <directory>src/main/resources</directory>
                 <excludes>
-                    <exclude>monolithic/osf/docker-compose.env.tmpl</exclude>
+                    <exclude>monolithic/docker-compose.env.tmpl</exclude>
                 </excludes>
                 <filtering>false</filtering>
             </resource>
