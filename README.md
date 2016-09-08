@@ -19,6 +19,7 @@ These images may be orchestrated by using the docker-compose configuration provi
     * [Details](#details)
 * [Requirements](#requirements)
 * [Try It](#try-it)
+* [Cleaning Up](#cleaning-up)
 
 # Use Case
 
@@ -85,3 +86,16 @@ It is anticipated that _external_ projects will have specific integrations with 
         * `dataconservancy/cos-fakecas`
         * `dataconservancy/cos-waterbutler`
 1. cd `target/classes/monolithic/` and invoke `docker-compose up`
+
+# Cleaning up
+
+As a developer you may find that you wish to re-build the Docker images in this project.  To do so involves three steps (assuming you are in the base directory of this repository):
+
+1. Shut down and dispose of any existing containers: `(cd target/classes/monolithic && docker-compose down)`
+1. Removal of the three Docker images produced by this project:
+    * `docker rmi dataconservancy/cos-waterbutler`
+    * `docker rmi dataconservancy/cos-osf-runtime`
+    * `docker rmi dataconservancy/cos-cos-fakecas`
+1. Remove files from the Maven `target/` directory: `mvn clean`
+
+At this juncture you should be able to make any local changes (e.g. editing a Dockerfile) and re-run `mvn verify` to pick up those changes and re-build the images.
