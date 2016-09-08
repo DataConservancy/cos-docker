@@ -86,6 +86,7 @@ It is anticipated that _external_ projects will have specific integrations with 
         * `dataconservancy/cos-fakecas`
         * `dataconservancy/cos-waterbutler`
 1. cd `target/classes/monolithic/` and invoke `docker-compose up`
+1. After successful startup, you should be able to point your web browser to `http://${DOCKER_MACHINE_IP}:5000/` and `http://${DOCKER_MACHINE_IP}:8000/v2/`.
 
 # Cleaning up
 
