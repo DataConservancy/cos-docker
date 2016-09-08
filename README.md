@@ -38,7 +38,7 @@ Finally, image build cost is incurred once, while runtime costs are incurred eac
     * Docker containers are spun up using `docker-compose`
     * Integration tests execute against the endpoints exposed by the Docker containers (e.g. the OSF v2 HTTP API)
         * There is no support for executing integration tests "inside of" a container; they must execute against some endpoint that is exposed by the container: a HTTP port, database port, etc.
-    * Docker images are pushed to the [Docker Hub](http://hub.docker.com/u/DataConservancy) if successful
+    * Docker images are pushed to the [Docker Hub](http://hub.docker.com/u/dataconservancy) if successful
 
 The purpose of the integration tests in _this_ project are to insure the viability of the Docker containers and their orchestration with `docker-compose`.  Essentially the integration tests provided by this project are glorified sanity checks of the images, container orchestration, and runtime.
 
