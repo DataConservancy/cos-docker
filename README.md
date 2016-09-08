@@ -84,4 +84,4 @@ It is anticipated that _external_ projects will have specific integrations with 
         * `dataconservancy/cos-osf-runtime`
         * `dataconservancy/cos-fakecas`
         * `dataconservancy/cos-waterbutler`
-1. cd `src/main/resources/monolithic/` and invoke `docker-compose up`
+1. cd `target/classes/monolithic/` and invoke `docker-compose up`
