@@ -73,10 +73,28 @@ It is anticipated that _external_ projects will have specific integrations with 
 
 1. Install and verify [requirements](#requirements)
 1. Clone this repository
-1. Consult the output of `docker-machine env osf-docker-test`
-1. Export the following shell variables:
-    * export DOCKER_MACHINE_NAME=osf-docker-test
-    * export DOCKER_MACHINE_IP=\`docker-machine inspect ${DOCKER_MACHINE_NAME} --format '{{ .Driver.IPAddress }}'\`
+1. Consult the output of the command line command `docker-machine env osf-docker-test`
+1. Export the following environment variables:
+    * DOCKER_MACHINE_NAME (the name of the Docker machine that will contain your CoS-related Docker images and containers)
+        * On \*nix: `export DOCKER_MACHINE_NAME=osf-docker-test`
+        * Windows command line: `set DOCKER_MACHINE_NAME=osf-docker-test`
+    * DOCKER_MACHINE_IP (the IP address assigned to your `osf-docker-test` Docker machine)    
+        * On \*nix: <code>export DOCKER_MACHINE_IP=\`docker-machine inspect ${DOCKER_MACHINE_NAME} --format '{{ .Driver.IPAddress }}'\`</code>
+        * Windows command line:
+            * Note the IP of the `osf-docker-test` Docker machine from the output of `docker-machine ls`
+            * Run: `set DOCKER_MACHINE_IP=value of the IP address`
+    * OSF_REPO (the GitHub repository url containing the OSF.io code you wish to build)
+        * On \*nix: `export OSF_REPO=https://github.com/emetsger/osf.io`
+        * Windows command line: `set OSF_REPO=https://github.com/emetsger/osf.io`       
+    * OSF_BRANCH (the name of the branch in ${OSF_REPO} that you want to build from)
+        * On \*nix: `export OSF_BRANCH=docker-support`
+        * Windows command line: `set OSF_BRANCH=https://github.com/emetsger/osf.io`
+    * WB_REPO (the GitHub repository url containing the Watebutler code you wish to build)
+        * On \*nix: `export WB_REPO=https://github.com/emetsger/waterbutler`
+        * Windows command line: `set WB_REPO=https://github.com/emetsger/waterbutler`
+    * WB_BRANCH (the name of the branch in ${WB_REPO} that you want to build from)
+        * On \*nix: `export WB_BRANCH=docker-support`
+        * Windows command line: `set WB_BRANCH=docker-support`
 1. Run `mvn verify`
 1. Make a pizza from scratch, including crust.
 1. Consult output of `mvn verify`

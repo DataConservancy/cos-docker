@@ -65,6 +65,10 @@
         <waterbutler.url>http://${docker.machine.ip}:7777</waterbutler.url>
         <waterbutler.addrs>['${docker.machine.ip}']</waterbutler.addrs>
         <toku.huge.pages>1</toku.huge.pages>
+        <osf.repo>${env.OSF_REPO}</osf.repo>
+        <osf.branch>${env.OSF_BRANCH}</osf.branch>
+        <wb.repo>${env.WB_REPO}</wb.repo>
+        <wb.branch>${env.WB_BRANCH}</wb.branch>
 
     </properties>
 
@@ -180,6 +184,10 @@
                                     <alias>cos-osf-runtime</alias>
                                     <name>dataconservancy/cos-osf-runtime:latest</name>
                                     <build>
+                                        <args>
+                                            <OSF_REPO>${osf.repo}</OSF_REPO>
+                                            <OSF_BRANCH>${osf.branch}</OSF_BRANCH>
+                                        </args>
                                         <dockerFileDir>osf/runtime</dockerFileDir>
                                     </build>
                                 </image>
@@ -187,6 +195,10 @@
                                     <alias>cos-waterbutler</alias>
                                     <name>dataconservancy/cos-waterbutler:latest</name>
                                     <build>
+                                        <args>
+                                            <WB_REPO>${wb.repo}</WB_REPO>
+                                            <WB_BRANCH>${wb.branch}</WB_BRANCH>
+                                        </args>
                                         <dockerFileDir>waterbutler</dockerFileDir>
                                     </build>
                                 </image>
