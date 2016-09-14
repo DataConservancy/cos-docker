@@ -15,7 +15,7 @@ install:
 - echo "export DOCKER_MACHINE_IP=`docker-machine inspect osf-docker-test --format '{{ .Driver.IPAddress }}'`" >> .docker.env
 services:
 - docker
-script: cat .docker.env && . .docker.env && env && travis_wait mvn verify
+script: echo "----" && cat .docker.env && echo "----" && . .docker.env && env && echo "----" && travis_wait mvn verify
 after_script: docker-machine rm -f osf-docker-test
 after_failure: cat target/rat.txt
 jdk:
