@@ -65,10 +65,10 @@
         <waterbutler.url>http://${docker.machine.ip}:7777</waterbutler.url>
         <waterbutler.addrs>['${docker.machine.ip}']</waterbutler.addrs>
         <toku.huge.pages>1</toku.huge.pages>
-        <osf.repo>${env.OSF_REPO}</osf.repo>
-        <osf.branch>${env.OSF_BRANCH}</osf.branch>
-        <wb.repo>${env.WB_REPO}</wb.repo>
-        <wb.branch>${env.WB_BRANCH}</wb.branch>
+        <osf.repo>https://github.com/emetsger/osf.io</osf.repo>
+        <osf.branch>docker-support</osf.branch>
+        <wb.repo>https://github.com/CenterForOpenScience/waterbutler</wb.repo>
+        <wb.branch>develop</wb.branch>
 
     </properties>
 
@@ -139,6 +139,12 @@
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>exec-maven-plugin</artifactId>
                     <version>1.5.0</version>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-enforcer-plugin</artifactId>
+                    <version>1.4.1</version>
                 </plugin>
 
             </plugins>
@@ -341,6 +347,34 @@
                                 <requireJavaVersion>
                                     <version>[1.8.0-31,)</version>
                                 </requireJavaVersion>
+                                <requireProperty>
+                                    <property>docker.host.url</property>
+                                    <message>DOCKER_HOST environment variable must be set!  Did you forget to run `docker-machine env osf-docker-test`? (see https://goo.gl/VhCRLL)</message>
+                                </requireProperty>
+                                <requireProperty>
+                                    <property>docker.machine.name</property>
+                                    <message>DOCKER_MACHINE_NAME environment variable must be set to the name of the Docker machine that is hosting your images and containers (see https://goo.gl/VhCRLL)</message>
+                                </requireProperty>
+                                <requireProperty>
+                                    <property>docker.machine.ip</property>
+                                    <message>DOCKER_MACHINE_IP environment variable must be set to the IP address of your Docker machine that is hosting your images and containers. (Hint: `docker-machine ls`) (see https://goo.gl/VhCRLL)</message>
+                                </requireProperty>
+                                <requireProperty>
+                                    <property>osf.repo</property>
+                                    <message>The 'osf.repo' system property must be set to the Git URL of the OSF.io codebase (e.g. 'https://github.com/CenterForOpenScience/osf.io') (see https://goo.gl/VhCRLL)</message>
+                                </requireProperty>
+                                <requireProperty>
+                                    <property>osf.branch</property>
+                                    <message>The 'osf.branch' system property must be set to the Git branch that will be checked out to build the OSF.io codebase (e.g. 'develop') (see https://goo.gl/VhCRLL)</message>
+                                </requireProperty>
+                                <requireProperty>
+                                    <property>wb.repo</property>
+                                    <message>The 'wb.repo' system property must be set to the Git URL of the Waterbutler code base (e.g. 'https://github.com/CenterForOpenScience/waterbutler') (see https://goo.gl/VhCRLL)</message>
+                                </requireProperty>
+                                <requireProperty>
+                                    <property>wb.branch</property>
+                                    <message>The 'wb.branch' system property must be set to the Git branch that will be checked out to build the Waterbutler codebase (e.g. 'develop') (see https://goo.gl/VhCRLL)</message>
+                                </requireProperty>
                             </rules>
                         </configuration>
                     </execution>

@@ -83,19 +83,16 @@ It is anticipated that _external_ projects will have specific integrations with 
         * Windows command line:
             * Note the IP of the `osf-docker-test` Docker machine from the output of `docker-machine ls`
             * Run: `set DOCKER_MACHINE_IP=value of the IP address`
-    * OSF_REPO (the GitHub repository url containing the OSF.io code you wish to build)
-        * On \*nix: `export OSF_REPO=https://github.com/emetsger/osf.io`
-        * Windows command line: `set OSF_REPO=https://github.com/emetsger/osf.io`       
-    * OSF_BRANCH (the name of the branch in ${OSF_REPO} that you want to build from)
-        * On \*nix: `export OSF_BRANCH=docker-support`
-        * Windows command line: `set OSF_BRANCH=docker-support`
-    * WB_REPO (the GitHub repository url containing the Watebutler code you wish to build)
-        * On \*nix: `export WB_REPO=https://github.com/emetsger/waterbutler`
-        * Windows command line: `set WB_REPO=https://github.com/emetsger/waterbutler`
-    * WB_BRANCH (the name of the branch in ${WB_REPO} that you want to build from)
-        * On \*nix: `export WB_BRANCH=docker-support`
-        * Windows command line: `set WB_BRANCH=docker-support`
-1. Run `mvn verify`
+1. **Optional:** Set the following _system properties_ (by invoking Maven with `-D<propertyName>=<propertyValue>`)
+    * `osf.repo` (the GitHub repository url containing the OSF.io code you wish to build)
+        * Defaults to `https://github.com/emetsger/osf.io`
+    * `osf.branch` (the name of the branch in ${OSF_REPO} that you want to build from)
+        * Defaults to `docker-support`
+    * `wb.repo` (the GitHub repository url containing the Waterbutler code you wish to build)
+        * Defaults to `https://github.com/CenterForOpenScience/waterbutler`
+    * `wb.branch` (the name of the branch in ${WB_REPO} that you want to build from)
+        * Defaults to `develop`
+1. Run `mvn verify` (or, if providing system properties from above: `mvn verify -D<propertyName>=<propertyValue>`)
 1. Make a pizza from scratch, including crust.
 1. Consult output of `mvn verify`
     * Insure build success
