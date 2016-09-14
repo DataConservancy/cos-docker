@@ -147,6 +147,12 @@
                     <version>1.4.1</version>
                 </plugin>
 
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-antrun-plugin</artifactId>
+                    <version>1.8</version>
+                </plugin>
+
             </plugins>
 
         </pluginManagement>
@@ -209,6 +215,26 @@
                                     </build>
                                 </image>
                             </images>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>copy-docker-compose-env-tmpl</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target name="Copy docker-compose.env.tmpl to .env">
+                                <copy file="${project.build.outputDirectory}/monolithic/docker-compose.env.tmpl"
+                                     tofile="${project.build.outputDirectory}/monolithic/.env"/>
+                            </target>
                         </configuration>
                     </execution>
                 </executions>
