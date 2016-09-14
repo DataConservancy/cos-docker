@@ -88,7 +88,7 @@ It is anticipated that _external_ projects will have specific integrations with 
         * Windows command line: `set OSF_REPO=https://github.com/emetsger/osf.io`       
     * OSF_BRANCH (the name of the branch in ${OSF_REPO} that you want to build from)
         * On \*nix: `export OSF_BRANCH=docker-support`
-        * Windows command line: `set OSF_BRANCH=https://github.com/emetsger/osf.io`
+        * Windows command line: `set OSF_BRANCH=docker-support`
     * WB_REPO (the GitHub repository url containing the Watebutler code you wish to build)
         * On \*nix: `export WB_REPO=https://github.com/emetsger/waterbutler`
         * Windows command line: `set WB_REPO=https://github.com/emetsger/waterbutler`
