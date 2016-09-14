@@ -13,10 +13,10 @@ install:
 - docker-machine env osf-docker-test > .docker.env
 - echo "DOCKER_MACHINE_NAME=osf-docker-test" >> .docker.env
 - echo "DOCKER_MACHINE_IP=`docker-machine inspect osf-docker-test --format '{{ .Driver.IPAddress }}'`" >> .docker.env
-- echo "OSF_REPO=https://github.com/emetsger/osf.io" >> .docker.env
-- echo "OSF_BRANCH=docker-support" >> .docker.env
-- echo "WB_REPO=https://github.com/emetsger/waterbutler" >> .docker.env
-- echo "WB_BRANCH=docker-support" >> .docker.env
+- export OSF_REPO=https://github.com/emetsger/osf.io
+- export OSF_BRANCH=docker-support
+- export WB_REPO=https://github.com/emetsger/waterbutler
+- export WB_BRANCH=docker-support
 services:
 - docker
 script: . .docker.env && travis_wait mvn verify
