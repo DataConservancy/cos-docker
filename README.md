@@ -75,9 +75,6 @@ It is anticipated that _external_ projects will have specific integrations with 
 1. Clone this repository
 1. Consult the output of the command line command `docker-machine env osf-docker-test`
 1. Export the following environment variables:
-    * DOCKER_MACHINE_NAME (the name of the Docker machine that will contain your CoS-related Docker images and containers)
-        * On \*nix: `export DOCKER_MACHINE_NAME=osf-docker-test`
-        * Windows command line: `set DOCKER_MACHINE_NAME=osf-docker-test`
     * DOCKER_MACHINE_IP (the IP address assigned to your `osf-docker-test` Docker machine)    
         * On \*nix: <code>export DOCKER_MACHINE_IP=\`docker-machine inspect ${DOCKER_MACHINE_NAME} --format '{{ .Driver.IPAddress }}'\`</code>
         * Windows command line:
@@ -92,9 +89,9 @@ It is anticipated that _external_ projects will have specific integrations with 
         * Defaults to `https://github.com/CenterForOpenScience/waterbutler`
     * `wb.branch` (the name of the branch in ${WB_REPO} that you want to build from)
         * Defaults to `develop`
-1. Run `mvn verify` (or, if providing system properties from above: `mvn verify -D<propertyName>=<propertyValue>`)
+1. Run `mvn clean verify` (or, if providing system properties from above: `mvn clean verify -D<propertyName>=<propertyValue>`)
 1. Make a pizza from scratch, including crust.
-1. Consult output of `mvn verify`
+1. Consult output of `mvn clean verify`
     * Insure build success
     * `docker images | grep dataconservancy` should include
         * `dataconservancy/cos-osf-runtime`
