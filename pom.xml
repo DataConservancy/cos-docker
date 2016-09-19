@@ -61,7 +61,7 @@
         <docker.osf.host>${docker.machine.ip}:5000</docker.osf.host>
         <cas.server.url>http://${docker.machine.ip}:8080</cas.server.url>
         <api.domain>http://${docker.machine.ip}:8000/</api.domain>
-        <domain>http://${docker.machine.ip}:5000</domain>
+        <domain>http://${docker.machine.ip}:5000/</domain>
         <waterbutler.url>http://${docker.machine.ip}:7777</waterbutler.url>
         <waterbutler.addrs>['${docker.machine.ip}']</waterbutler.addrs>
         <toku.huge.pages>1</toku.huge.pages>
