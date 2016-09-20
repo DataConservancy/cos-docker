@@ -205,3 +205,4 @@ COPY website/ website/
 COPY entrypoint.sh /
 RUN chmod 700 /entrypoint.sh
 ENTRYPOINT [ "/entrypoint.sh" ]
+VOLUME ${CODE}
