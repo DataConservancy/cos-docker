@@ -270,18 +270,6 @@
                     </environmentVariables>
                 </configuration>
                 <executions>
-                  <execution>
-                      <id>prepare-docker-compose-env</id>
-                      <phase>pre-integration-test</phase>
-                      <goals>
-                          <goal>exec</goal>
-                      </goals>
-                      <configuration>
-                          <!-- TODO make this copy platform independent with ant plugin -->
-                          <executable>cp</executable>
-                          <commandlineArgs>${project.build.outputDirectory}/monolithic/docker-compose.env.tmpl ${project.build.outputDirectory}/monolithic/.env</commandlineArgs>
-                      </configuration>
-                  </execution>
                     <execution>
                         <id>docker-compose-up</id>
                         <phase>pre-integration-test</phase>
