@@ -24,7 +24,8 @@ ARG FAKECAS_ARCH
 ENV FAKECAS_VERSION=${FAKECAS_VERSION:-0.8.0} \
     FAKECAS_ARCH=${FAKECAS_ARCH:-linux-386}
 
-ENV FAKECAS_URL=https://github.com/CenterForOpenScience/fakecas/releases/download/${FAKECAS_VERSION}/fakecas-${FAKECAS_ARCH}
+# Downloads a release that incorporates PRs that have not been incorporated upstream
+ENV FAKECAS_URL=https://github.com/emetsger/fakecas/releases/download/${FAKECAS_VERSION}-use-host/fakecas-${FAKECAS_ARCH}
 
 RUN \
 
